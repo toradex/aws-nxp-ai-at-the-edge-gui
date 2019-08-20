@@ -94,7 +94,7 @@ export default {
     }
   },
   methods: {
-    consolo () {
+    monitorCPUTemperature () {
       setInterval(() => {
         const me = this
         axios.get('http://10.42.0.248:5001/cpu')
@@ -109,12 +109,14 @@ export default {
           this.gcor = 'red'
         } else if (this.tempA72 > 50) {
           this.gcor = 'warning'
+        } else {
+          this.gcor = 'green'
         }
       }, 1000)
     }
   },
   created () {
-    this.consolo()
+    this.monitorCPUTemperature()
   }
 }
 </script>
