@@ -4,73 +4,201 @@
   </q-page> -->
   <q-page class="q-pa-md row items-start q-gutter-md flex flex-center">
 
-    <!-- A72 temperatures  -->
-    <q-card class="my-card text-white">
-      <q-item>
-        <q-item-section avatar>
-          <q-avatar size="48px">
-            <img src="~assets/thermometer.svg">
-          </q-avatar>
-        </q-item-section>
+    <div class="q-pa-md q-gutter-md">
 
-        <q-item-section>
-          <q-item-label>A72 Temperature</q-item-label>
-          <q-item-label
-            style="color: white;"
-            caption
-          >iMX8 ARM Dual Core</q-item-label>
-        </q-item-section>
-      </q-item>
+      <div class="q-pa-md row q-gutter-md">
+        <!-- A72 temperatures  -->
+        <q-card class="my-card text-white">
+          <q-item>
+            <q-item-section avatar>
+              <q-avatar
+                square
+                size="48px"
+              >
+                <img src="~assets/thermometer.svg">
+              </q-avatar>
+            </q-item-section>
 
-      <q-knob
-        readonly
-        v-model="tempA72"
-        show-value
-        font-size="50px"
-        size="300px"
-        :thickness="0.25"
-        track-color="grey-3"
-        class="text-white q-ma-md"
-        :color="gcor"
-      >
-        {{ tempA72 }} ºC
-      </q-knob>
-    </q-card>
+            <q-item-section>
+              <q-item-label>A72 Temperature</q-item-label>
+              <q-item-label
+                style="color: white;"
+                caption
+              >iMX8 ARM Dual Core</q-item-label>
+            </q-item-section>
+          </q-item>
 
-    <!-- A53 temperatures  -->
-    <q-card class="my-card text-white">
-      <q-item>
-        <q-item-section avatar>
-          <q-avatar size="48px">
-            <img src="~assets/thermometer.svg">
-          </q-avatar>
-        </q-item-section>
-
-        <q-item-section>
-          <q-item-label>A53 Temperature</q-item-label>
-          <q-item-label
-            style="color: white;"
-            caption
+          <q-knob
+            readonly
+            v-model="tempA72"
+            show-value
+            font-size="25px"
+            size="200px"
+            :thickness="0.25"
+            track-color="grey-3"
+            class="text-white q-ma-md"
+            :color="gcor"
           >
-            iMX8 ARM Quad Core
-          </q-item-label>
-        </q-item-section>
-      </q-item>
+            {{ tempA72 }} ºC
+          </q-knob>
+        </q-card>
 
-      <q-knob
-        readonly
-        v-model="tempA53"
-        show-value
-        font-size="50px"
-        size="300px"
-        :thickness="0.25"
-        track-color="grey-3"
-        :color="gcor"
-        class="text-white q-ma-md"
-      >
-        {{ tempA53 }} ºC
-      </q-knob>
-    </q-card>
+        <!-- A53 temperatures  -->
+        <q-card class="my-card text-white">
+          <q-item>
+            <q-item-section avatar>
+              <q-avatar
+                square
+                size="48px"
+              >
+                <img src="~assets/thermometer.svg">
+              </q-avatar>
+            </q-item-section>
+
+            <q-item-section>
+              <q-item-label>A53 Temperature</q-item-label>
+              <q-item-label
+                style="color: white;"
+                caption
+              >
+                iMX8 ARM Quad Core
+              </q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-knob
+            readonly
+            v-model="tempA53"
+            show-value
+            font-size="25px"
+            size="200px"
+            :thickness="0.25"
+            track-color="grey-3"
+            :color="gcor"
+            class="text-white q-ma-md"
+          >
+            {{ tempA53 }} ºC
+          </q-knob>
+        </q-card>
+      </div>
+
+      <div class="q-pa-md row q-gutter-md">
+        <!-- A72 temperatures  -->
+        <q-card class="my-card text-white">
+          <q-item>
+            <q-item-section avatar>
+              <q-avatar
+                square
+                size="48px"
+              >
+                <img src="~assets/thermometer.svg">
+              </q-avatar>
+            </q-item-section>
+
+            <q-item-section>
+              <q-item-label>A72 Temperature</q-item-label>
+              <q-item-label
+                style="color: white;"
+                caption
+              >iMX8 ARM Dual Core</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-knob
+            readonly
+            v-model="tempA72"
+            show-value
+            font-size="25px"
+            size="200px"
+            :thickness="0.25"
+            track-color="grey-3"
+            class="text-white q-ma-md"
+            :color="gcor"
+          >
+            {{ tempA72 }} ºC
+          </q-knob>
+        </q-card>
+
+        <!-- A53 temperatures  -->
+        <q-card class="my-card text-white">
+          <q-item>
+            <q-item-section avatar>
+              <q-avatar
+                square
+                size="48px"
+              >
+                <img src="~assets/thermometer.svg">
+              </q-avatar>
+            </q-item-section>
+
+            <q-item-section>
+              <q-item-label>A53 Temperature</q-item-label>
+              <q-item-label
+                style="color: white;"
+                caption
+              >
+                iMX8 ARM Quad Core
+              </q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-knob
+            readonly
+            v-model="tempA53"
+            show-value
+            font-size="25px"
+            size="200px"
+            :thickness="0.25"
+            track-color="grey-3"
+            :color="gcor"
+            class="text-white q-ma-md"
+          >
+            {{ tempA53 }} ºC
+          </q-knob>
+        </q-card>
+      </div>
+    </div>
+
+    <div
+      class="q-pa-md row q-gutter-md"
+      style="max-width: 600px"
+    >
+      <!-- camera -->
+      <q-card class="my-card text-white">
+        <q-item>
+          <q-item-section avatar>
+            <q-avatar
+              square
+              size="48px"
+            >
+              <img src="~assets/camera.svg">
+            </q-avatar>
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Camera</q-item-label>
+            <q-item-label
+              style="color: white;"
+              caption
+            >
+              Let's see some pasta
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <web-cam
+          ref="webcam"
+          :device-id="deviceId"
+          width="100%"
+          @started="onStarted"
+          @stopped="onStopped"
+          @error="onError"
+          @cameras="onCameras"
+          @camera-change="onCameraChange"
+        />
+
+      </q-card>
+    </div>
 
   </q-page>
 </template>
@@ -79,18 +207,49 @@
 .my-card {
   background: radial-gradient(circle, #444444 0%, #232323 100%);
 }
+
+.dash-card {
+  width: 100%;
+  max-width: 250px;
+}
 </style>
 
 <script>
 import axios from 'axios'
+import { WebCam } from 'vue-web-cam'
 
 export default {
   name: 'PageIndex',
+  components: {
+    WebCam
+  },
   data () {
     return {
       tempA72: 0.0,
       tempA53: 0.0,
-      gcor: 'blue'
+      gcor: 'blue',
+      camera: null,
+      deviceId: null,
+      devices: []
+    }
+  },
+  computed: {
+    device: function () {
+      return this.devices.find(n => n.deviceId === this.deviceId)
+    }
+  },
+  watch: {
+    camera: function (id) {
+      this.deviceId = id
+    },
+    devices: function () {
+      // Once we have a list select the first one
+      const [first, ...tail] = this.devices
+      if (first) {
+        this.camera = first.deviceId
+        this.deviceId = first.deviceId
+      }
+      console.log(tail)
     }
   },
   methods: {
@@ -113,6 +272,34 @@ export default {
           this.gcor = 'green'
         }
       }, 1000)
+    },
+    /* camera methods */
+    onCapture () {
+      this.img = this.$refs.webcam.capture()
+    },
+    onStarted (stream) {
+      console.log('On Started Event', stream)
+    },
+    onStopped (stream) {
+      console.log('On Stopped Event', stream)
+    },
+    onStop () {
+      this.$refs.webcam.stop()
+    },
+    onStart () {
+      this.$refs.webcam.start()
+    },
+    onError (error) {
+      console.log('On Error Event', error)
+    },
+    onCameras (cameras) {
+      this.devices = cameras
+      console.log('On Cameras Event', cameras)
+    },
+    onCameraChange (deviceId) {
+      this.deviceId = deviceId
+      this.camera = deviceId
+      console.log('On Camera Change Event', deviceId)
     }
   },
   created () {
