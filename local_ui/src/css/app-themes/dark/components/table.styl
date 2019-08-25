@@ -1,0 +1,27 @@
+@import '../../common.variables.styl'
+
+.q-table
+  background-color $dark-theme-bg
+  color $dark-theme-fg
+
+  th
+    color darken($dark-theme-fg, 35)
+
+  th:hover
+    color $secondary
+
+  td, th, tr, thead
+    border-color rgba($dark-theme-fg, .12)
+
+  .hoverable:hover td
+    background-color rgba($secondary, .3)
+
+  .clickable:active td
+    background-color darken($secondary, 15)
+
+  .selectable.selected td
+    background-color darken($secondary, 15)
+
+.q-table-bottom, .q-table__bottom
+  color $dark-theme-fg
+  background-color $dark-theme-bg

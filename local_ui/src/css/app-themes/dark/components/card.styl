@@ -1,0 +1,18 @@
+@import '../../common.variables.styl'
+
+.q-card
+  background-color $dark-theme-bg
+  color #fff
+
+  &.hoverable:hover
+    background-color rgba($secondary, .3)
+
+  &.clickable:active
+    background-color rgba(darken($secondary, 15), .3)
+
+  .inset-card-divider
+    background-color $dark-theme-bg-dark
+    padding .25rem
+    width 100%
+    border-radius .5rem
+    box-shadow inset 0 1px 5px rgba(0, 0, 0, .2), inset 0 2px 2px rgba(0, 0, 0, .14), inset 0 3px 1px -2px rgba(0, 0, 0, .12)

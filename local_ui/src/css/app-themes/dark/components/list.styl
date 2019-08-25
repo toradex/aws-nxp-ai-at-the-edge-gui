@@ -1,0 +1,24 @@
+@import '../../common.variables.styl'
+
+.q-list
+  background-color $dark-theme-bg
+  color $dark-theme-fg
+  border-color transparent
+
+  .q-item-link:hover
+    background-color rgba($secondary, .3)
+
+  .q-item-link:active
+    background-color darken($secondary, 15)
+
+  .q-item.selected
+    background-color darken($secondary, 15)
+
+.q-menu
+  .q-list
+    background-color $light-theme-bg
+    color $light-theme-fg
+    border-color transparent
+
+    .q-item, .q-item-link
+      color $light-theme-fg

@@ -1,0 +1,18 @@
+@import '../../common.variables.styl'
+
+.q-drawer
+  color $dark-theme-fg
+  background-color $dark-theme-bg !important
+
+  .q-list > .q-item, .q-item-link
+    color $dark-theme-fg
+    background-color transparent
+
+    &:hover
+      color $primary
+      background-color $dark-theme-bg-dark
+
+    &.q-router-link--active
+      &.q-router-link--exact-active
+        color $secondary
+        background-color $dark-theme-bg-dark

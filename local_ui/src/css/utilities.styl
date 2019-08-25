@@ -1,0 +1,173 @@
+// ################## TEXTS ###################
+.thin-text
+  font-weight 200
+
+.normal-text
+  font-weight 300
+
+.error-message
+  color $negative
+  background-color rgba($negative, .1)
+
+.success-message
+  color $positive
+  background-color rgba($positive, .1)
+
+.text-1
+  font-size 1rem
+
+.text-2
+  font-size 1.5rem
+
+.text-3
+  font-size 2rem
+
+.text-4
+  font-size 3rem
+
+hr
+  border 1px solid $border-light !important
+
+  .dark
+    border-color $border-dark
+
+h1
+  font-size 2rem
+
+h2
+  font-size 1.4rem
+
+// ################## BOXES AND SIZING ###################
+.main-content
+  padding 2rem
+
+for num in 1 .. 12
+  .col-{num}
+    width (100 / num)%
+
+for num in 0 .. 5
+  val = (num / 5) * 5 * .7
+
+  .p-{num}
+    padding val rem !important
+
+  .pl-{num}
+    padding-left val rem !important
+
+  .pr-{num}
+    padding-right val rem !important
+
+  .pt-{num}
+    padding-top val rem !important
+
+  .pb-{num}
+    padding-bottom val rem !important
+
+  .m-{num}
+    margin val rem !important
+
+  .ml-{num}
+    margin-left val rem !important
+
+  .mr-{num}
+    margin-right val rem !important
+
+  .mt-{num}
+    margin-top val rem !important
+
+  .mb-{num}
+    margin-bottom val rem !important
+
+.m-auto
+  margin auto
+
+.ml-auto
+  margin-left auto
+
+.mr-auto
+  margin-right auto
+
+for num in 1 .. 10
+  .opacity-{num * 10}
+    opacity (num / 10)
+
+  .mnw-{num * 10}
+    min-width (num * 10) % !important
+
+  .mxw-{num * 10}
+    max-width (num * 10) % !important
+
+  .w-{num * 10}
+    width (num * 10) % !important
+
+  .h-{num * 10}
+    height (num * 10) % !important
+
+  .w-{num * 10}vw
+    width (num * 10) vw !important
+
+  .h-{num * 10}vh
+    height (num * 10) vh !important
+
+  .w-{num * 10}em
+    width (num * 10) em !important
+
+  .h-{num * 10}em
+    height (num * 10) em !important
+
+  .mnw-{num * 10}vw
+    min-width (num * 10) vw !important
+
+  .mxw-{num * 10}vw
+    max-width (num * 10) vw !important
+
+  .mnh-{num * 10}vh
+    min-height (num * 10) vh !important
+
+  .mxh-{num * 10}vh
+    max-height (num * 10) vh !important
+
+  .mnh-{num * 10}em
+    min-height (num * 10) em !important
+
+  .mxh-{num * 10}em
+    max-height (num * 10) em !important
+
+  .mnw-{num * 10}em
+    min-width (num * 10) em !important
+
+  .mxw-{num * 10}em
+    max-width (num * 10) em !important
+
+.d-none
+  display none
+
+.ui-item
+  padding .8rem 0
+  border-top 1px solid $border-light
+
+.bt-1
+  border-top 1px solid rgba(#f2f2f2, .1)
+
+.bb-1
+  border-bottom 1px solid $border-light
+
+// ################## EFFECTS ###################
+.y-scroll
+  overflow-x hidden
+  overflow-y scroll
+
+.bg-light-grey
+  background-color #f2f2f2
+
+.bt-negative
+  border-top 2px solid $negative
+
+.bt-warning
+  border-top 2px solid $warning
+
+.bt-secondary
+  border-top 2px solid $secondary
+
+.bt-primary
+  border-top 2px solid $primary

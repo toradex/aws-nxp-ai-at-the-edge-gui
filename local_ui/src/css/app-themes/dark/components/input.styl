@@ -1,0 +1,32 @@
+@import '../../common.variables.styl'
+
+.q-field__native
+  color #fff
+
+// .q-field__control{
+// border-color: rgba(gray, 0.3);
+// }
+.q-field__control
+  &:before
+    border-color rgba(white, .1)
+
+  &:hover
+    &:before
+      border-color rgba(white, .5)
+
+.q-field:hover
+  .q-field__marginal
+    color rgba(white, .5)
+
+.q-field__marginal
+  color rgba(white, .5)
+
+.q-field__label
+  color rgba(white, .5)
+
+.q-field--focused
+  .q-field__marginal
+    color rgba($primary, 1)
+
+  .q-field__label
+    color rgba($primary, 1)

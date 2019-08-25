@@ -1,13 +1,16 @@
 // app global css
 
-body {
-    background-color: #191919;
-}
+// app global css
+@import './app-themes/dark/all'
+@import './utilities'
 
-.knob-green svg, circle, circle {
-    color: #13ba0b !important;
-}
+body
+  max-width 100vw
+  overflow-x hidden
+  background-color $dark-theme-bg-dark
 
-.knob-red svg, circle, circle {
-    color: #f44336;
-}
+.knob-green svg, circle, circle
+  color #13ba0b !important
+
+.knob-red svg, circle, circle
+  color #f44336
