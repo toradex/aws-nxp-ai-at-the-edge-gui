@@ -16,7 +16,7 @@
           AWS Greengrass Dashboard
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <div>Toradex</div>
       </q-toolbar>
     </q-header>
 
