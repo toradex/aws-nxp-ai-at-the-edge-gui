@@ -204,14 +204,14 @@
 </template>
 
 <style lang="stylus" scoped>
-.my-card {
+/*.my-card {
   background: radial-gradient(circle, #444444 0%, #232323 100%);
 }
 
 .dash-card {
   width: 100%;
   max-width: 250px;
-}
+}*/
 </style>
 
 <script>
@@ -244,12 +244,12 @@ export default {
     },
     devices: function () {
       // Once we have a list select the first one
-      const [first, ...tail] = this.devices
+      const list = this.devices
+      var first = list[0]
       if (first) {
         this.camera = first.deviceId
         this.deviceId = first.deviceId
       }
-      console.log(tail)
     }
   },
   methods: {
@@ -303,6 +303,15 @@ export default {
     }
   },
   created () {
+    try {
+      // try fullscreen stuff
+      const electron = require('electron')
+      var window = electron.remote.getCurrentWindow()
+      window.setFullScreen(true)
+    } catch (err) {
+      console.warn(err)
+    }
+
     this.monitorCPUTemperature()
   }
 }
