@@ -245,6 +245,10 @@ export default {
     devices: function () {
       // Once we have a list select the first one
       const list = this.devices
+      console.log('Devices listed by electron')
+      list.forEach(element => {
+        console.log(element.label)
+      })
       var first = list[0]
       if (first) {
         this.camera = first.deviceId
@@ -290,7 +294,8 @@ export default {
       this.$refs.webcam.start()
     },
     onError (error) {
-      console.log('On Error Event', error)
+      console.log('On Error Event')
+      console.error(error)
     },
     onCameras (cameras) {
       this.devices = cameras
