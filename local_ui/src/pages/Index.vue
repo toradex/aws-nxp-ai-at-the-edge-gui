@@ -6,6 +6,7 @@
 
     <div class="q-pa-md q-gutter-md">
 
+      <!-- CPU INFO -->
       <div class="q-pa-md row q-gutter-md">
         <!-- A72 temperatures  -->
         <q-card class="my-card text-white">
@@ -37,7 +38,7 @@
             :thickness="0.25"
             track-color="grey-3"
             class="text-white q-ma-md"
-            :color="gcor"
+            :color="gauge_tempA72Color"
           >
             {{ tempA72 }} ºC
           </q-knob>
@@ -74,16 +75,55 @@
             size="200px"
             :thickness="0.25"
             track-color="grey-3"
-            :color="gcor"
+            :color="gauge_tempA53Color"
             class="text-white q-ma-md"
           >
             {{ tempA53 }} ºC
+          </q-knob>
+        </q-card>
+
+        <!-- CPU USAGE  -->
+        <q-card class="my-card text-white">
+          <q-item>
+            <q-item-section avatar>
+              <q-avatar
+                square
+                size="48px"
+              >
+                <img src="~assets/cpu.svg">
+              </q-avatar>
+            </q-item-section>
+
+            <q-item-section>
+              <q-item-label>CPU Usage</q-item-label>
+              <q-item-label
+                style="color: white;"
+                caption
+              >
+                iMX8 Quad Max
+              </q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-knob
+            readonly
+            v-model="cpu_usage"
+            show-value
+            font-size="25px"
+            size="200px"
+            :thickness="0.25"
+            track-color="grey-3"
+            :color="gauge_cpuColor"
+            class="text-white q-ma-md"
+          >
+            {{ cpu_usage }} %
           </q-knob>
         </q-card>
       </div>
 
+      <!-- GPU TEMPERATURES -->
       <div class="q-pa-md row q-gutter-md">
-        <!-- A72 temperatures  -->
+        <!-- GPU Core1 temperature  -->
         <q-card class="my-card text-white">
           <q-item>
             <q-item-section avatar>
@@ -96,66 +136,29 @@
             </q-item-section>
 
             <q-item-section>
-              <q-item-label>A72 Temperature</q-item-label>
+              <q-item-label>GPU Temperature</q-item-label>
               <q-item-label
                 style="color: white;"
                 caption
-              >iMX8 ARM Dual Core</q-item-label>
+              >Vivante GC7000 </q-item-label>
             </q-item-section>
           </q-item>
 
           <q-knob
             readonly
-            v-model="tempA72"
+            v-model="gpuTemp"
             show-value
             font-size="25px"
             size="200px"
             :thickness="0.25"
             track-color="grey-3"
             class="text-white q-ma-md"
-            :color="gcor"
+            :color="gauge_gpuTempColor"
           >
-            {{ tempA72 }} ºC
+            {{ gpuTemp }} ºC
           </q-knob>
         </q-card>
 
-        <!-- A53 temperatures  -->
-        <q-card class="my-card text-white">
-          <q-item>
-            <q-item-section avatar>
-              <q-avatar
-                square
-                size="48px"
-              >
-                <img src="~assets/thermometer.svg">
-              </q-avatar>
-            </q-item-section>
-
-            <q-item-section>
-              <q-item-label>A53 Temperature</q-item-label>
-              <q-item-label
-                style="color: white;"
-                caption
-              >
-                iMX8 ARM Quad Core
-              </q-item-label>
-            </q-item-section>
-          </q-item>
-
-          <q-knob
-            readonly
-            v-model="tempA53"
-            show-value
-            font-size="25px"
-            size="200px"
-            :thickness="0.25"
-            track-color="grey-3"
-            :color="gcor"
-            class="text-white q-ma-md"
-          >
-            {{ tempA53 }} ºC
-          </q-knob>
-        </q-card>
       </div>
     </div>
 
@@ -227,6 +230,12 @@ export default {
     return {
       tempA72: 0.0,
       tempA53: 0.0,
+      cpu_usage: 0.0,
+      gpuTemp: 0.0,
+      gauge_tempA72Color: 'blue',
+      gauge_tempA53Color: 'blue',
+      gauge_gpuTempColor: 'blue',
+      gauge_cpuColor: 'blue',
       gcor: 'blue',
       camera: null,
       deviceId: null,
@@ -257,24 +266,41 @@ export default {
     }
   },
   methods: {
+    setDynamicGaugeColor (tmp, color) {
+      if (tmp > 80.0) {
+        this[color] = 'red'
+      } else if (tmp > 50) {
+        this[color] = 'warning'
+      } else {
+        this[color] = 'green'
+      }
+    },
     monitorCPUTemperature () {
       setInterval(() => {
         const me = this
+        // rest for cpu info
+        axios.get('http://10.42.0.248:5001/gpu')
+          .then(response => {
+            if (response.data.temperatures !== undefined) {
+              me.gpuTemp = response.data.temperatures.GPU0
+
+              me.setDynamicGaugeColor(me.gpuTemp, 'gauge_gpuTempColor')
+            }
+          })
+
+        // rest for gpu
         axios.get('http://10.42.0.248:5001/cpu')
           .then(response => {
             if (response.data.temperatures !== undefined) {
               me.tempA72 = response.data.temperatures.A72
               me.tempA53 = response.data.temperatures.A53
+              me.cpu_usage = response.data.usage
+
+              me.setDynamicGaugeColor(me.tempA72, 'gauge_tempA72Color')
+              me.setDynamicGaugeColor(me.tempA53, 'gauge_tempA53Color')
+              me.setDynamicGaugeColor(me.cpu_usage, 'gauge_cpuColor')
             }
           })
-
-        if (this.tempA72 > 80.0) {
-          this.gcor = 'red'
-        } else if (this.tempA72 > 50) {
-          this.gcor = 'warning'
-        } else {
-          this.gcor = 'green'
-        }
       }, 1000)
     },
     /* camera methods */
