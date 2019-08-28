@@ -227,7 +227,7 @@
 
     <div
       class="q-pa-md row q-gutter-md"
-      style="max-width: 600px"
+      style="max-width: 900px"
     >
       <!-- camera -->
       <q-card class="my-card text-white">
