@@ -271,11 +271,10 @@ export default {
       tempA53: 0.0,
       cpu_usage: 0.0,
       gpuTemp: 0.0,
-      gauge_tempA72Color: 'blue',
-      gauge_tempA53Color: 'blue',
-      gauge_gpuTempColor: 'blue',
-      gauge_cpuColor: 'blue',
-      gcor: 'blue',
+      gauge_tempA72Color: 'positive',
+      gauge_tempA53Color: 'positive',
+      gauge_gpuTempColor: 'positive',
+      gauge_cpuColor: 'positive',
       camera: null,
       deviceId: null,
       devices: [],
@@ -324,11 +323,11 @@ export default {
   methods: {
     setDynamicGaugeColor (tmp, color) {
       if (tmp > 80.0) {
-        this[color] = 'red'
+        this[color] = 'negative'
       } else if (tmp > 50) {
         this[color] = 'warning'
       } else {
-        this[color] = 'green'
+        this[color] = 'positive'
       }
     },
     monitorCPUTemperature () {
