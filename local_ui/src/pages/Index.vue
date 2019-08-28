@@ -183,7 +183,7 @@
 
           <div class="chartRAM">
             <IEcharts
-              :option="bar"
+              :option="rambar"
               :loading="loading"
               @ready="onReady"
               theme="macarons2"
@@ -214,7 +214,7 @@
 
           <div class="chartRAM">
             <IEcharts
-              :option="bar"
+              :option="rambar"
               :loading="loading"
               @ready="onReady"
               theme="macarons2"
@@ -311,19 +311,21 @@ export default {
       devices: [],
       // memory chart
       loading: true,
-      bar: {
+      rambar_maxpoints: 20,
+      rambar_localpoint: 0,
+      rambar: {
         title: {
           text: ''
         },
         tooltip: {},
         xAxis: {
-          data: ['Shirt', 'Sweater', 'Chiffon Shirt', 'Pants', 'High Heels', 'Socks']
+          data: [0, 1, 2]
         },
         yAxis: {},
         series: [{
-          name: 'Sales',
+          name: 'usage',
           type: 'line',
-          data: [5, 20, 36, 10, 10, 20]
+          data: [0, 1, 2]
         }]
       }
     }
@@ -364,17 +366,30 @@ export default {
     monitorCPUTemperature () {
       setInterval(() => {
         const me = this
-        // rest for cpu info
+        // rest for gpu info
         axios.get('http://10.42.0.248:5001/gpu')
           .then(response => {
             if (response.data.temperatures !== undefined) {
               me.gpuTemp = response.data.temperatures.GPU0
 
+              me.rambar_localpoint++
+              if (me.rambar_localpoint >= me.rambar_maxpoints) {
+                me.rambar_localpoint = 0
+              }
+
+              me.rambar.xAxis.data[me.rambar_localpoint] = me.rambar_localpoint
+              me.rambar.series[0].data[me.rambar_localpoint] = response.data.memoryUsage
+
+              // react
+              me.rambar.series[0].data.push(0)
+              me.rambar.series[0].data.splice(me.rambar.series[0].data.length - 1, 1)
+              console.log(response.data.memoryUsage)
+
               me.setDynamicGaugeColor(me.gpuTemp, 'gauge_gpuTempColor')
             }
           })
 
-        // rest for gpu
+        // rest for cpu
         axios.get('http://10.42.0.248:5001/cpu')
           .then(response => {
             if (response.data.temperatures !== undefined) {
