@@ -199,7 +199,7 @@
                 square
                 size="48px"
               >
-                <img src="~assets/ram-memory.svg">
+                <img src="~assets/graphics-card.svg">
               </q-avatar>
             </q-item-section>
 
