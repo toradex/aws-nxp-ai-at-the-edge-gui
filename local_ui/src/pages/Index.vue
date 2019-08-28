@@ -214,8 +214,8 @@
 
           <div class="chartRAM">
             <IEcharts
-              :option="rambar"
-              :loading="loading"
+              :option="gpumembar"
+              :loading="gpumemloading"
               @ready="onReady"
               theme="macarons2"
             />
@@ -327,6 +327,25 @@ export default {
           type: 'line',
           data: [0, 1, 2]
         }]
+      },
+      // gpu chart
+      gpumemloading: true,
+      gpumem_maxpoints: 20,
+      gpumem_localpoint: 0,
+      gpumembar: {
+        title: {
+          text: ''
+        },
+        tooltip: {},
+        xAxis: {
+          data: [0, 1, 2]
+        },
+        yAxis: {},
+        series: [{
+          name: 'usage',
+          type: 'line',
+          data: [0, 1, 2]
+        }]
       }
     }
   },
@@ -372,18 +391,17 @@ export default {
             if (response.data.temperatures !== undefined) {
               me.gpuTemp = response.data.temperatures.GPU0
 
-              me.rambar_localpoint++
-              if (me.rambar_localpoint >= me.rambar_maxpoints) {
-                me.rambar_localpoint = 0
+              me.gpumem_localpoint++
+              if (me.gpumem_localpoint >= me.gpumem_maxpoints) {
+                me.gpumem_localpoint = 0
               }
 
-              me.rambar.xAxis.data[me.rambar_localpoint] = me.rambar_localpoint
-              me.rambar.series[0].data[me.rambar_localpoint] = response.data.memoryUsage
+              me.gpumembar.xAxis.data[me.gpumem_localpoint] = me.gpumem_localpoint
+              me.gpumembar.series[0].data[me.gpumem_localpoint] = response.data.memoryUsage
 
               // react
-              me.rambar.series[0].data.push(0)
-              me.rambar.series[0].data.splice(me.rambar.series[0].data.length - 1, 1)
-              console.log(response.data.memoryUsage)
+              me.gpumembar.series[0].data.push(0)
+              me.gpumembar.series[0].data.splice(me.gpumembar.series[0].data.length - 1, 1)
 
               me.setDynamicGaugeColor(me.gpuTemp, 'gauge_gpuTempColor')
             }
@@ -400,6 +418,29 @@ export default {
               me.setDynamicGaugeColor(me.tempA72, 'gauge_tempA72Color')
               me.setDynamicGaugeColor(me.tempA53, 'gauge_tempA53Color')
               me.setDynamicGaugeColor(me.cpu_usage, 'gauge_cpuColor')
+            }
+          })
+
+        // rest for cpu
+        axios.get('http://10.42.0.248:5001/ram')
+          .then(response => {
+            if (response.data.usage !== undefined) {
+              let free = response.data.free
+              let total = response.data.total
+
+              let use = total - free
+
+              me.rambar_localpoint++
+              if (me.rambar_localpoint >= me.rambar_maxpoints) {
+                me.rambar_localpoint = 0
+              }
+
+              me.rambar.xAxis.data[me.rambar_localpoint] = me.rambar_localpoint
+              me.rambar.series[0].data[me.rambar_localpoint] = use
+
+              // react
+              me.rambar.series[0].data.push(0)
+              me.rambar.series[0].data.splice(me.rambar.series[0].data.length - 1, 1)
             }
           })
       }, 1000)
@@ -437,6 +478,7 @@ export default {
     onReady (instance, ECharts) {
       console.log(instance, ECharts)
       this.loading = false
+      this.gpumemloading = false
     },
     onClick (event, instance, ECharts) {
       console.log(arguments)
