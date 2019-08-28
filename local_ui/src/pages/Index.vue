@@ -82,6 +82,42 @@
           </q-knob>
         </q-card>
 
+        <!-- GPU Core1 temperature  -->
+        <q-card class="my-card text-white">
+          <q-item>
+            <q-item-section avatar>
+              <q-avatar
+                square
+                size="48px"
+              >
+                <img src="~assets/thermometer.svg">
+              </q-avatar>
+            </q-item-section>
+
+            <q-item-section>
+              <q-item-label>GPU Temperature</q-item-label>
+              <q-item-label
+                style="color: white;"
+                caption
+              >Vivante GC7000 </q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-knob
+            readonly
+            v-model="gpuTemp"
+            show-value
+            font-size="25px"
+            size="200px"
+            :thickness="0.25"
+            track-color="grey-3"
+            class="text-white q-ma-md"
+            :color="gauge_gpuTempColor"
+          >
+            {{ gpuTemp }} ºC
+          </q-knob>
+        </q-card>
+
         <!-- CPU USAGE  -->
         <q-card class="my-card text-white">
           <q-item>
@@ -119,6 +155,7 @@
             {{ cpu_usage }} %
           </q-knob>
         </q-card>
+
       </div>
 
       <!-- GPU TEMPERATURES -->
@@ -136,27 +173,22 @@
             </q-item-section>
 
             <q-item-section>
-              <q-item-label>GPU Temperature</q-item-label>
+              <q-item-label>CPU Memory</q-item-label>
               <q-item-label
                 style="color: white;"
                 caption
-              >Vivante GC7000 </q-item-label>
+              >Usage per time </q-item-label>
             </q-item-section>
           </q-item>
 
-          <q-knob
-            readonly
-            v-model="gpuTemp"
-            show-value
-            font-size="25px"
-            size="200px"
-            :thickness="0.25"
-            track-color="grey-3"
-            class="text-white q-ma-md"
-            :color="gauge_gpuTempColor"
-          >
-            {{ gpuTemp }} ºC
-          </q-knob>
+          <div class="chartRAM">
+            <IEcharts
+              :option="bar"
+              :loading="loading"
+              @ready="onReady"
+              theme="macarons2"
+            />
+          </div>
         </q-card>
 
       </div>
@@ -207,24 +239,31 @@
 </template>
 
 <style lang="stylus" scoped>
-/*.my-card {
+/* .my-card {
   background: radial-gradient(circle, #444444 0%, #232323 100%);
 }
 
 .dash-card {
   width: 100%;
   max-width: 250px;
-}*/
+} */
+.chartRAM {
+  width: 600px;
+  height: 350px;
+}
 </style>
 
 <script>
 import axios from 'axios'
+import IEcharts from 'vue-echarts-v3/src/full.js'
+import 'echarts/theme/macarons2.js'
 import { WebCam } from 'vue-web-cam'
 
 export default {
   name: 'PageIndex',
   components: {
-    WebCam
+    WebCam,
+    IEcharts
   },
   data () {
     return {
@@ -239,7 +278,24 @@ export default {
       gcor: 'blue',
       camera: null,
       deviceId: null,
-      devices: []
+      devices: [],
+      // memory chart
+      loading: true,
+      bar: {
+        title: {
+          text: ''
+        },
+        tooltip: {},
+        xAxis: {
+          data: ['Shirt', 'Sweater', 'Chiffon Shirt', 'Pants', 'High Heels', 'Socks']
+        },
+        yAxis: {},
+        series: [{
+          name: 'Sales',
+          type: 'line',
+          data: [5, 20, 36, 10, 10, 20]
+        }]
+      }
     }
   },
   computed: {
@@ -331,6 +387,14 @@ export default {
       this.deviceId = deviceId
       this.camera = deviceId
       console.log('On Camera Change Event', deviceId)
+    },
+    // charts
+    onReady (instance, ECharts) {
+      console.log(instance, ECharts)
+      this.loading = false
+    },
+    onClick (event, instance, ECharts) {
+      console.log(arguments)
     }
   },
   created () {
