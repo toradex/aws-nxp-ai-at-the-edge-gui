@@ -158,9 +158,9 @@
 
       </div>
 
-      <!-- GPU TEMPERATURES -->
+      <!-- CARDS FOR CHARTS USAGE -->
       <div class="q-pa-md row q-gutter-md">
-        <!-- GPU Core1 temperature  -->
+        <!-- RAM memory usage  -->
         <q-card class="my-card text-white">
           <q-item>
             <q-item-section avatar>
@@ -168,12 +168,43 @@
                 square
                 size="48px"
               >
-                <img src="~assets/thermometer.svg">
+                <img src="~assets/ram-memory.svg">
               </q-avatar>
             </q-item-section>
 
             <q-item-section>
-              <q-item-label>CPU Memory</q-item-label>
+              <q-item-label>RAM Memory</q-item-label>
+              <q-item-label
+                style="color: white;"
+                caption
+              >Usage per time </q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <div class="chartRAM">
+            <IEcharts
+              :option="bar"
+              :loading="loading"
+              @ready="onReady"
+              theme="macarons2"
+            />
+          </div>
+        </q-card>
+
+        <!-- GPU memory usage  -->
+        <q-card class="my-card text-white">
+          <q-item>
+            <q-item-section avatar>
+              <q-avatar
+                square
+                size="48px"
+              >
+                <img src="~assets/ram-memory.svg">
+              </q-avatar>
+            </q-item-section>
+
+            <q-item-section>
+              <q-item-label>GPU Memory</q-item-label>
               <q-item-label
                 style="color: white;"
                 caption
@@ -248,8 +279,8 @@
   max-width: 250px;
 } */
 .chartRAM {
-  width: 600px;
-  height: 350px;
+  width: 480px;
+  height: 300px;
 }
 </style>
 
