@@ -7,7 +7,7 @@
     <div class="q-pa-md q-gutter-md">
 
       <!-- CPU INFO -->
-      <div class="q-pa-md row q-gutter-md">
+      <div class="q-pa-md row q-gutter-md justify-center">
         <!-- A72 temperatures  -->
         <q-card class="my-card text-white">
           <q-item>
@@ -29,19 +29,21 @@
             </q-item-section>
           </q-item>
 
-          <q-knob
-            readonly
-            v-model="tempA72"
-            show-value
-            font-size="25px"
-            size="200px"
-            :thickness="0.25"
-            track-color="grey-3"
-            class="text-white q-ma-md"
-            :color="gauge_tempA72Color"
-          >
-            {{ tempA72 }} ºC
-          </q-knob>
+          <div class="row full-height justify-center">
+            <q-knob
+              readonly
+              v-model="tempA72"
+              show-value
+              font-size="15px"
+              size="100px"
+              :thickness="0.25"
+              track-color="grey-3"
+              class="text-white q-ma-md"
+              :color="gauge_tempA72Color"
+            >
+              {{ tempA72 }} ºC
+            </q-knob>
+          </div>
         </q-card>
 
         <!-- A53 temperatures  -->
@@ -67,19 +69,21 @@
             </q-item-section>
           </q-item>
 
-          <q-knob
-            readonly
-            v-model="tempA53"
-            show-value
-            font-size="25px"
-            size="200px"
-            :thickness="0.25"
-            track-color="grey-3"
-            :color="gauge_tempA53Color"
-            class="text-white q-ma-md"
-          >
-            {{ tempA53 }} ºC
-          </q-knob>
+          <div class="row full-height justify-center">
+            <q-knob
+              readonly
+              v-model="tempA53"
+              show-value
+              font-size="15px"
+              size="100px"
+              :thickness="0.25"
+              track-color="grey-3"
+              :color="gauge_tempA53Color"
+              class="text-white q-ma-md"
+            >
+              {{ tempA53 }} ºC
+            </q-knob>
+          </div>
         </q-card>
 
         <!-- GPU Core1 temperature  -->
@@ -103,19 +107,21 @@
             </q-item-section>
           </q-item>
 
-          <q-knob
-            readonly
-            v-model="gpuTemp"
-            show-value
-            font-size="25px"
-            size="200px"
-            :thickness="0.25"
-            track-color="grey-3"
-            class="text-white q-ma-md"
-            :color="gauge_gpuTempColor"
-          >
-            {{ gpuTemp }} ºC
-          </q-knob>
+          <div class="row full-height justify-center">
+            <q-knob
+              readonly
+              v-model="gpuTemp"
+              show-value
+              font-size="15px"
+              size="100px"
+              :thickness="0.25"
+              track-color="grey-3"
+              class="text-white q-ma-md"
+              :color="gauge_gpuTempColor"
+            >
+              {{ gpuTemp }} ºC
+            </q-knob>
+          </div>
         </q-card>
 
         <!-- CPU USAGE  -->
@@ -141,27 +147,29 @@
             </q-item-section>
           </q-item>
 
-          <q-knob
-            readonly
-            v-model="cpu_usage"
-            show-value
-            font-size="25px"
-            size="200px"
-            :thickness="0.25"
-            track-color="grey-3"
-            :color="gauge_cpuColor"
-            class="text-white q-ma-md"
-          >
-            {{ cpu_usage }} %
-          </q-knob>
+          <div class="row full-height justify-center">
+            <q-knob
+              readonly
+              v-model="cpu_usage"
+              show-value
+              font-size="15px"
+              size="100px"
+              :thickness="0.25"
+              track-color="grey-3"
+              :color="gauge_cpuColor"
+              class="text-white q-ma-md"
+            >
+              {{ cpu_usage }} %
+            </q-knob>
+          </div>
         </q-card>
 
       </div>
 
       <!-- CARDS FOR CHARTS USAGE -->
-      <div class="q-pa-md row q-gutter-md">
+      <div class="q-pa-md row q-gutter-md justify-center">
         <!-- RAM memory usage  -->
-        <q-card class="my-card text-white">
+        <q-card class="text-white">
           <q-item>
             <q-item-section avatar>
               <q-avatar
@@ -192,7 +200,7 @@
         </q-card>
 
         <!-- GPU memory usage  -->
-        <q-card class="my-card text-white">
+        <q-card class="text-white">
           <q-item>
             <q-item-section avatar>
               <q-avatar
@@ -230,7 +238,7 @@
       style="max-width: 900px"
     >
       <!-- camera -->
-      <q-card class="my-card text-white">
+      <q-card class="text-white">
         <q-item>
           <q-item-section avatar>
             <q-avatar
@@ -272,15 +280,14 @@
 <style lang="stylus" scoped>
 /* .my-card {
   background: radial-gradient(circle, #444444 0%, #232323 100%);
+} */
+.my-card {
+  max-height: 200px !important;
 }
 
-.dash-card {
-  width: 100%;
-  max-width: 250px;
-} */
 .chartRAM {
   width: 480px;
-  height: 300px;
+  height: 200px;
 }
 </style>
 
@@ -298,6 +305,7 @@ export default {
   },
   data () {
     return {
+      restAddr: '10.22.1.185:5001',
       tempA72: 0.0,
       tempA53: 0.0,
       cpu_usage: 0.0,
@@ -386,7 +394,7 @@ export default {
       setInterval(() => {
         const me = this
         // rest for gpu info
-        axios.get('http://10.42.0.248:5001/gpu')
+        axios.get('http://' + this.restAddr + '/gpu')
           .then(response => {
             if (response.data.temperatures !== undefined) {
               me.gpuTemp = response.data.temperatures.GPU0
@@ -408,7 +416,7 @@ export default {
           })
 
         // rest for cpu
-        axios.get('http://10.42.0.248:5001/cpu')
+        axios.get('http://' + this.restAddr + '/cpu')
           .then(response => {
             if (response.data.temperatures !== undefined) {
               me.tempA72 = response.data.temperatures.A72
@@ -422,7 +430,7 @@ export default {
           })
 
         // rest for cpu
-        axios.get('http://10.42.0.248:5001/ram')
+        axios.get('http://' + this.restAddr + '/ram')
           .then(response => {
             if (response.data.usage !== undefined) {
               let free = response.data.free
