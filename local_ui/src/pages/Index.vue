@@ -256,7 +256,7 @@
 <script>
 import axios from 'axios'
 import IEcharts from 'vue-echarts-v3/src/full.js'
-import 'echarts/theme/macarons2.js'
+import '../components/macarons2.js'
 import { WebCam } from 'vue-web-cam'
 
 export default {
