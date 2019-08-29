@@ -339,7 +339,10 @@ export default {
         xAxis: {
           data: [0, 1, 2]
         },
-        yAxis: {},
+        yAxis: {
+          max: 4,
+          min: 0
+        },
         series: [{
           name: 'usage',
           type: 'line',
@@ -358,7 +361,10 @@ export default {
         xAxis: {
           data: [0, 1, 2]
         },
-        yAxis: {},
+        yAxis: {
+          max: 100,
+          min: 0
+        },
         series: [{
           name: 'usage',
           type: 'line',
