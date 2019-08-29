@@ -27,11 +27,11 @@
             </q-item-section>
 
             <q-item-section>
-              <q-item-label>A72 Temperature</q-item-label>
+              <q-item-label>A72 Dual Core</q-item-label>
               <q-item-label
                 style="color: white;"
                 caption
-              >iMX8 ARM Dual Core</q-item-label>
+              >Temperature</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -65,12 +65,12 @@
             </q-item-section>
 
             <q-item-section>
-              <q-item-label>A53 Temperature</q-item-label>
+              <q-item-label>A53 Quad Core</q-item-label>
               <q-item-label
                 style="color: white;"
                 caption
               >
-                iMX8 ARM Quad Core
+                Temperature
               </q-item-label>
             </q-item-section>
           </q-item>
@@ -105,11 +105,11 @@
             </q-item-section>
 
             <q-item-section>
-              <q-item-label>GPU Temperature</q-item-label>
+              <q-item-label>GPU GC7000</q-item-label>
               <q-item-label
                 style="color: white;"
                 caption
-              >Vivante GC7000 </q-item-label>
+              >Temperature </q-item-label>
             </q-item-section>
           </q-item>
 
@@ -143,12 +143,12 @@
             </q-item-section>
 
             <q-item-section>
-              <q-item-label>CPU Usage</q-item-label>
+              <q-item-label>i.MX 8QM</q-item-label>
               <q-item-label
                 style="color: white;"
                 caption
               >
-                iMX8 Quad Max
+                CPU AVG Usage
               </q-item-label>
             </q-item-section>
           </q-item>
