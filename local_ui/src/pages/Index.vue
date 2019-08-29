@@ -4,7 +4,13 @@
   </q-page> -->
   <q-page class="q-pa-md row items-start q-gutter-md flex flex-center">
 
-    <div class="q-pa-md q-gutter-md">
+    <q-img
+      src="../assets/partneraws.resized.png"
+      class="fixed-top"
+      style="height: 215px; width: 479px;"
+    />
+
+    <div class="q-pa-md q-gutter-md fallback">
 
       <!-- CPU INFO -->
       <div class="q-pa-md row q-gutter-md justify-center">
@@ -234,7 +240,7 @@
     </div>
 
     <div
-      class="q-pa-md row q-gutter-md"
+      class="q-pa-md row q-gutter-md fallback"
       style="max-width: 900px"
     >
       <!-- camera -->
@@ -289,6 +295,10 @@
   width: 480px;
   height: 200px;
 }
+
+.fallback {
+  margin-top: 100px;
+}
 </style>
 
 <script>
@@ -305,7 +315,7 @@ export default {
   },
   data () {
     return {
-      restAddr: '10.22.1.185:5001',
+      restAddr: '10.42.0.248:5001',
       tempA72: 0.0,
       tempA53: 0.0,
       cpu_usage: 0.0,
