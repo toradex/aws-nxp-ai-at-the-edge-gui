@@ -457,7 +457,7 @@
 }
 
 .fallback {
-  margin-top: 200px;
+  margin-top: 130px;
 }
 
 .q-pa-md {
@@ -505,7 +505,8 @@ export default {
         },
         yAxis: {
           max: 4,
-          min: 0
+          min: 0,
+          name: 'Gigabytes'
         },
         series: [{
           name: 'usage',
@@ -527,7 +528,8 @@ export default {
         },
         yAxis: {
           max: 100,
-          min: 0
+          min: 0,
+          name: 'Percentage'
         },
         series: [{
           name: 'usage',
