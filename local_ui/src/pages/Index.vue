@@ -5,51 +5,70 @@
   <q-page class="q-pa-md row items-start q-gutter-md flex flex-center">
 
     <q-img
-      src="../assets/partneraws.resized.png"
+      src="../assets/partneraws2.png"
       class="fixed-top"
       style="height: 215px; width: 479px;"
     />
 
     <div class="q-pa-md q-gutter-md fallback">
 
-      <!-- CPU INFO -->
-      <div class="q-pa-md row q-gutter-md justify-center">
-        <!-- A72 temperatures  -->
+      <!-- PASTA DETECTION INFO -->
+      <div class="q-pa-md row items-start q-gutter-md justify-center">
+        <!-- pasta1  -->
         <q-card class="my-card text-white">
-          <q-item>
-            <q-item-section avatar>
-              <q-avatar
-                square
-                size="48px"
-              >
-                <img src="~assets/thermometer.svg">
-              </q-avatar>
-            </q-item-section>
+          <q-img
+            src="../assets/farfalle.png"
+            style="height: 212px; width: 212px;"
+          >
+            <div class="absolute-top text-subtitle2 text-center">
+              <q-linear-progress
+                dark
+                rounded
+                style="height: 20px"
+                :value="progress1"
+                color="positive"
+              />
+              <div class="text-white set-position">Confidence {{ progress1 * 100 }} %</div>
+            </div>
+          </q-img>
+        </q-card>
 
-            <q-item-section>
-              <q-item-label>A72 Dual Core</q-item-label>
-              <q-item-label
-                style="color: white;"
-                caption
-              >Temperature</q-item-label>
-            </q-item-section>
-          </q-item>
+        <!-- pasta2  -->
+        <q-card class="my-card text-white">
+          <q-img
+            src="../assets/fusine.png"
+            style="height: 212px; width: 212px;"
+          >
+            <div class="absolute-top text-subtitle2 text-center">
+              <q-linear-progress
+                dark
+                rounded
+                style="height: 20px"
+                :value="progress2"
+                color="warning"
+              />
+              <div class="text-white set-position">Confidence {{ progress2 * 100 }} %</div>
+            </div>
+          </q-img>
+        </q-card>
 
-          <div class="row  justify-center">
-            <q-knob
-              readonly
-              v-model="tempA72"
-              show-value
-              font-size="15px"
-              size="100px"
-              :thickness="0.25"
-              track-color="grey-3"
-              class="text-white q-ma-md"
-              :color="gauge_tempA72Color"
-            >
-              {{ tempA72 }} ºC
-            </q-knob>
-          </div>
+        <!-- pasta3  -->
+        <q-card class="my-card text-white">
+          <q-img
+            src="../assets/idonotknow.png"
+            style="height: 212px; width: 212px;"
+          >
+            <div class="absolute-top text-subtitle2 text-center">
+              <q-linear-progress
+                dark
+                rounded
+                style="height: 20px"
+                :value="progress3"
+                color="negative"
+              />
+              <div class="text-white set-position">Confidence {{ progress3 * 100 }} %</div>
+            </div>
+          </q-img>
         </q-card>
 
         <!-- A53 temperatures  -->
@@ -60,17 +79,17 @@
                 square
                 size="48px"
               >
-                <img src="~assets/thermometer.svg">
+                <img src="~assets/speedometer.svg">
               </q-avatar>
             </q-item-section>
 
             <q-item-section>
-              <q-item-label>A53 Quad Core</q-item-label>
+              <q-item-label>Conveyor Belt</q-item-label>
               <q-item-label
                 style="color: white;"
                 caption
               >
-                Temperature
+                Motor Speed
               </q-item-label>
             </q-item-section>
           </q-item>
@@ -78,94 +97,16 @@
           <div class="row  justify-center">
             <q-knob
               readonly
-              v-model="tempA53"
+              v-model="motorSpeed"
               show-value
               font-size="15px"
               size="100px"
               :thickness="0.25"
               track-color="grey-3"
-              :color="gauge_tempA53Color"
+              :color="gauge_motorSpee"
               class="text-white q-ma-md"
             >
-              {{ tempA53 }} ºC
-            </q-knob>
-          </div>
-        </q-card>
-
-        <!-- GPU Core1 temperature  -->
-        <q-card class="my-card text-white">
-          <q-item>
-            <q-item-section avatar>
-              <q-avatar
-                square
-                size="48px"
-              >
-                <img src="~assets/thermometer.svg">
-              </q-avatar>
-            </q-item-section>
-
-            <q-item-section>
-              <q-item-label>GPU GC7000</q-item-label>
-              <q-item-label
-                style="color: white;"
-                caption
-              >Temperature </q-item-label>
-            </q-item-section>
-          </q-item>
-
-          <div class="row  justify-center">
-            <q-knob
-              readonly
-              v-model="gpuTemp"
-              show-value
-              font-size="15px"
-              size="100px"
-              :thickness="0.25"
-              track-color="grey-3"
-              class="text-white q-ma-md"
-              :color="gauge_gpuTempColor"
-            >
-              {{ gpuTemp }} ºC
-            </q-knob>
-          </div>
-        </q-card>
-
-        <!-- CPU USAGE  -->
-        <q-card class="my-card text-white">
-          <q-item>
-            <q-item-section avatar>
-              <q-avatar
-                square
-                size="48px"
-              >
-                <img src="~assets/cpu.svg">
-              </q-avatar>
-            </q-item-section>
-
-            <q-item-section>
-              <q-item-label>i.MX 8QM</q-item-label>
-              <q-item-label
-                style="color: white;"
-                caption
-              >
-                CPU AVG Usage
-              </q-item-label>
-            </q-item-section>
-          </q-item>
-
-          <div class="row  justify-center">
-            <q-knob
-              readonly
-              v-model="cpu_usage"
-              show-value
-              font-size="15px"
-              size="100px"
-              :thickness="0.25"
-              track-color="grey-3"
-              :color="gauge_cpuColor"
-              class="text-white q-ma-md"
-            >
-              {{ cpu_usage }} %
+              {{ motorSpeed }}
             </q-knob>
           </div>
         </q-card>
@@ -448,7 +389,9 @@
   background: radial-gradient(circle, #444444 0%, #232323 100%);
 } */
 .my-card {
-  max-height: 200px !important;
+  height: 212px;
+  width: 212px;
+  max-height: 212px !important;
 }
 
 .chartRAM {
@@ -462,6 +405,13 @@
 
 .q-pa-md {
   padding: 0px !important;
+}
+
+.set-position {
+  position: inherit;
+  bottom: 15px;
+  text-align: center;
+  width: 90%;
 }
 </style>
 
@@ -484,10 +434,15 @@ export default {
       tempA53: 0.0,
       cpu_usage: 0.0,
       gpuTemp: 0.0,
+      motorSpeed: 50.0,
       gauge_tempA72Color: 'positive',
       gauge_tempA53Color: 'positive',
       gauge_gpuTempColor: 'positive',
       gauge_cpuColor: 'positive',
+      gauge_motorSpee: 'positive',
+      progress1: 0.8,
+      progress2: 0.5,
+      progress3: 0.3,
       camera: null,
       deviceId: null,
       devices: [],

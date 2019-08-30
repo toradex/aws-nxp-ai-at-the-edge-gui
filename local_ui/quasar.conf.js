@@ -41,6 +41,7 @@ module.exports = function (ctx) {
         'QBtn',
         'QIcon',
         'QList',
+        'QImg',
         'QItem',
         'QItemSection',
         'QItemLabel',
@@ -48,7 +49,8 @@ module.exports = function (ctx) {
         'QCard',
         'QCardSection',
         'QCardActions',
-        'QAvatar'
+        'QAvatar',
+        'QLinearProgress'
       ],
 
       directives: [
