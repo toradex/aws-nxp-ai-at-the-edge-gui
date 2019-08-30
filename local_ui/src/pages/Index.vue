@@ -35,7 +35,7 @@
             </q-item-section>
           </q-item>
 
-          <div class="row full-height justify-center">
+          <div class="row  justify-center">
             <q-knob
               readonly
               v-model="tempA72"
@@ -75,7 +75,7 @@
             </q-item-section>
           </q-item>
 
-          <div class="row full-height justify-center">
+          <div class="row  justify-center">
             <q-knob
               readonly
               v-model="tempA53"
@@ -113,7 +113,7 @@
             </q-item-section>
           </q-item>
 
-          <div class="row full-height justify-center">
+          <div class="row  justify-center">
             <q-knob
               readonly
               v-model="gpuTemp"
@@ -153,7 +153,167 @@
             </q-item-section>
           </q-item>
 
-          <div class="row full-height justify-center">
+          <div class="row  justify-center">
+            <q-knob
+              readonly
+              v-model="cpu_usage"
+              show-value
+              font-size="15px"
+              size="100px"
+              :thickness="0.25"
+              track-color="grey-3"
+              :color="gauge_cpuColor"
+              class="text-white q-ma-md"
+            >
+              {{ cpu_usage }} %
+            </q-knob>
+          </div>
+        </q-card>
+
+      </div>
+
+      <!-- CPU INFO -->
+      <div class="q-pa-md row q-gutter-md justify-center">
+        <!-- A72 temperatures  -->
+        <q-card class="my-card text-white">
+          <q-item>
+            <q-item-section avatar>
+              <q-avatar
+                square
+                size="48px"
+              >
+                <img src="~assets/thermometer.svg">
+              </q-avatar>
+            </q-item-section>
+
+            <q-item-section>
+              <q-item-label>A72 Dual Core</q-item-label>
+              <q-item-label
+                style="color: white;"
+                caption
+              >Temperature</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <div class="row  justify-center">
+            <q-knob
+              readonly
+              v-model="tempA72"
+              show-value
+              font-size="15px"
+              size="100px"
+              :thickness="0.25"
+              track-color="grey-3"
+              class="text-white q-ma-md"
+              :color="gauge_tempA72Color"
+            >
+              {{ tempA72 }} ºC
+            </q-knob>
+          </div>
+        </q-card>
+
+        <!-- A53 temperatures  -->
+        <q-card class="my-card text-white">
+          <q-item>
+            <q-item-section avatar>
+              <q-avatar
+                square
+                size="48px"
+              >
+                <img src="~assets/thermometer.svg">
+              </q-avatar>
+            </q-item-section>
+
+            <q-item-section>
+              <q-item-label>A53 Quad Core</q-item-label>
+              <q-item-label
+                style="color: white;"
+                caption
+              >
+                Temperature
+              </q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <div class="row  justify-center">
+            <q-knob
+              readonly
+              v-model="tempA53"
+              show-value
+              font-size="15px"
+              size="100px"
+              :thickness="0.25"
+              track-color="grey-3"
+              :color="gauge_tempA53Color"
+              class="text-white q-ma-md"
+            >
+              {{ tempA53 }} ºC
+            </q-knob>
+          </div>
+        </q-card>
+
+        <!-- GPU Core1 temperature  -->
+        <q-card class="my-card text-white">
+          <q-item>
+            <q-item-section avatar>
+              <q-avatar
+                square
+                size="48px"
+              >
+                <img src="~assets/thermometer.svg">
+              </q-avatar>
+            </q-item-section>
+
+            <q-item-section>
+              <q-item-label>GPU GC7000</q-item-label>
+              <q-item-label
+                style="color: white;"
+                caption
+              >Temperature </q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <div class="row  justify-center">
+            <q-knob
+              readonly
+              v-model="gpuTemp"
+              show-value
+              font-size="15px"
+              size="100px"
+              :thickness="0.25"
+              track-color="grey-3"
+              class="text-white q-ma-md"
+              :color="gauge_gpuTempColor"
+            >
+              {{ gpuTemp }} ºC
+            </q-knob>
+          </div>
+        </q-card>
+
+        <!-- CPU USAGE  -->
+        <q-card class="my-card text-white">
+          <q-item>
+            <q-item-section avatar>
+              <q-avatar
+                square
+                size="48px"
+              >
+                <img src="~assets/cpu.svg">
+              </q-avatar>
+            </q-item-section>
+
+            <q-item-section>
+              <q-item-label>i.MX 8QM</q-item-label>
+              <q-item-label
+                style="color: white;"
+                caption
+              >
+                CPU AVG Usage
+              </q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <div class="row  justify-center">
             <q-knob
               readonly
               v-model="cpu_usage"
@@ -297,7 +457,11 @@
 }
 
 .fallback {
-  margin-top: 100px;
+  margin-top: 200px;
+}
+
+.q-pa-md {
+  padding: 0px !important;
 }
 </style>
 
