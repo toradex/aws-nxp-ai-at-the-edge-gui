@@ -1,7 +1,4 @@
 <template>
-  <!--<q-page class="flex flex-center">
-    <img alt="Quasar logo" src="~assets/quasar-logo-full.svg">
-  </q-page> -->
   <q-page class="q-pa-md row items-start q-gutter-md flex flex-center">
 
     <q-img
@@ -15,7 +12,7 @@
       <!-- PASTA DETECTION INFO -->
       <div class="q-pa-md row items-start q-gutter-md justify-center">
         <!-- pasta1  -->
-        <q-card class="my-card text-white">
+        <q-card class="my-pasta text-white">
           <q-img
             src="statics/farfalle.png"
             style="height: 212px; width: 212px;"
@@ -34,7 +31,7 @@
         </q-card>
 
         <!-- pasta2  -->
-        <q-card class="my-card text-white">
+        <q-card class="my-pasta text-white">
           <q-img
             src="statics/fusine.png"
             style="height: 212px; width: 212px;"
@@ -53,7 +50,7 @@
         </q-card>
 
         <!-- pasta3  -->
-        <q-card class="my-card text-white">
+        <q-card class="my-pasta text-white">
           <q-img
             src="statics/idonotknow.png"
             style="height: 212px; width: 212px;"
@@ -72,7 +69,10 @@
         </q-card>
 
         <!-- A53 temperatures  -->
-        <q-card class="my-card text-white">
+        <q-card
+          style="margin-top: 79px;"
+          class="my-card text-white"
+        >
           <q-item>
             <q-item-section avatar>
               <q-avatar
@@ -94,20 +94,15 @@
             </q-item-section>
           </q-item>
 
-          <div class="row  justify-center">
-            <q-knob
-              readonly
-              v-model="motorSpeed"
-              show-value
-              font-size="15px"
-              size="100px"
-              :thickness="0.25"
-              track-color="grey-3"
-              :color="gauge_motorSpee"
-              class="text-white q-ma-md"
-            >
-              {{ motorSpeed }}
-            </q-knob>
+          <div class="row justify-center no-gauge-distance">
+            <q-linear-progress
+              dark
+              rounded
+              style="height: 40px"
+              :value="motorSpeed"
+              color="warning"
+            />
+            <div class="text-white no-gauge">{{ motorSpeed * 100 }} %</div>
           </div>
         </q-card>
 
@@ -136,20 +131,15 @@
             </q-item-section>
           </q-item>
 
-          <div class="row  justify-center">
-            <q-knob
-              readonly
-              v-model="tempA72"
-              show-value
-              font-size="15px"
-              size="100px"
-              :thickness="0.25"
-              track-color="grey-3"
-              class="text-white q-ma-md"
+          <div class="row justify-center no-gauge-distance">
+            <q-linear-progress
+              dark
+              rounded
+              style="height: 40px"
+              :value="tempA72"
               :color="gauge_tempA72Color"
-            >
-              {{ tempA72 }} ºC
-            </q-knob>
+            />
+            <div class="text-white no-gauge">{{ tempA72 * 100 }} %</div>
           </div>
         </q-card>
 
@@ -176,20 +166,15 @@
             </q-item-section>
           </q-item>
 
-          <div class="row  justify-center">
-            <q-knob
-              readonly
-              v-model="tempA53"
-              show-value
-              font-size="15px"
-              size="100px"
-              :thickness="0.25"
-              track-color="grey-3"
+          <div class="row justify-center no-gauge-distance">
+            <q-linear-progress
+              dark
+              rounded
+              style="height: 40px"
+              :value="tempA53"
               :color="gauge_tempA53Color"
-              class="text-white q-ma-md"
-            >
-              {{ tempA53 }} ºC
-            </q-knob>
+            />
+            <div class="text-white no-gauge">{{ tempA53 * 100 }} %</div>
           </div>
         </q-card>
 
@@ -214,20 +199,15 @@
             </q-item-section>
           </q-item>
 
-          <div class="row  justify-center">
-            <q-knob
-              readonly
-              v-model="gpuTemp"
-              show-value
-              font-size="15px"
-              size="100px"
-              :thickness="0.25"
-              track-color="grey-3"
-              class="text-white q-ma-md"
+          <div class="row justify-center no-gauge-distance">
+            <q-linear-progress
+              dark
+              rounded
+              style="height: 40px"
+              :value="gpuTemp"
               :color="gauge_gpuTempColor"
-            >
-              {{ gpuTemp }} ºC
-            </q-knob>
+            />
+            <div class="text-white no-gauge">{{ gpuTemp * 100 }} %</div>
           </div>
         </q-card>
 
@@ -254,20 +234,15 @@
             </q-item-section>
           </q-item>
 
-          <div class="row  justify-center">
-            <q-knob
-              readonly
-              v-model="cpu_usage"
-              show-value
-              font-size="15px"
-              size="100px"
-              :thickness="0.25"
-              track-color="grey-3"
+          <div class="row justify-center no-gauge-distance">
+            <q-linear-progress
+              dark
+              rounded
+              style="height: 40px"
+              :value="cpu_usage"
               :color="gauge_cpuColor"
-              class="text-white q-ma-md"
-            >
-              {{ cpu_usage }} %
-            </q-knob>
+            />
+            <div class="text-white no-gauge">{{ cpu_usage * 100 }} %</div>
           </div>
         </q-card>
 
@@ -296,13 +271,15 @@
             </q-item-section>
           </q-item>
 
-          <div class="chartRAM">
-            <IEcharts
-              :option="rambar"
-              :loading="loading"
-              @ready="onReady"
-              theme="macarons2"
+          <div class="row justify-center progressRAM no-gauge-distance">
+            <q-linear-progress
+              dark
+              rounded
+              style="height: 40px"
+              :value="ramMem"
+              :color="ramMemColor"
             />
+            <div class="text-white no-chart">{{ ramMem * 100 }} %</div>
           </div>
         </q-card>
 
@@ -327,13 +304,15 @@
             </q-item-section>
           </q-item>
 
-          <div class="chartRAM">
-            <IEcharts
-              :option="gpumembar"
-              :loading="gpumemloading"
-              @ready="onReady"
-              theme="macarons2"
+          <div class="row justify-center progressRAM no-gauge-distance">
+            <q-linear-progress
+              dark
+              rounded
+              style="height: 40px"
+              :value="gpuMem"
+              :color="gpuMemColor"
             />
+            <div class="text-white no-chart">{{ gpuMem * 100 }} %</div>
           </div>
         </q-card>
 
@@ -342,7 +321,7 @@
 
     <div
       class="q-pa-md row q-gutter-md fallback"
-      style="max-width: 900px"
+      style="max-width: 800px"
     >
       <!-- camera -->
       <q-card class="text-white">
@@ -370,7 +349,8 @@
         <web-cam
           ref="webcam"
           :device-id="deviceId"
-          width="100%"
+          width="800"
+          height="640"
           @started="onStarted"
           @stopped="onStopped"
           @error="onError"
@@ -385,10 +365,13 @@
 </template>
 
 <style lang="stylus" scoped>
-/* .my-card {
-  background: radial-gradient(circle, #444444 0%, #232323 100%);
-} */
 .my-card {
+  height: 150px;
+  width: 212px;
+  max-height: 212px !important;
+}
+
+.my-pasta {
   height: 212px;
   width: 212px;
   max-height: 212px !important;
@@ -397,6 +380,11 @@
 .chartRAM {
   width: 480px;
   height: 200px;
+}
+
+.progressRAM {
+  width: 440px;
+  height: 98px;
 }
 
 .fallback {
@@ -413,19 +401,33 @@
   text-align: center;
   width: 90%;
 }
+
+.no-gauge {
+  margin-top: -35px;
+  z-index: 99;
+}
+
+.no-chart {
+  margin-top: -50px;
+  z-index: 99;
+}
+
+.no-gauge-distance {
+  padding: 15px;
+  font-weight: bold;
+  font-size: 20px;
+}
 </style>
 
 <script>
 import axios from 'axios'
-import IEcharts from 'vue-echarts-v3/src/full.js'
 import '../components/macarons2.js'
 import { WebCam } from 'vue-web-cam'
 
 export default {
   name: 'PageIndex',
   components: {
-    WebCam,
-    IEcharts
+    WebCam
   },
   data () {
     return {
@@ -434,64 +436,22 @@ export default {
       tempA53: 0.0,
       cpu_usage: 0.0,
       gpuTemp: 0.0,
-      motorSpeed: 50.0,
+      gpuMem: 0.0,
+      ramMem: 0.0,
+      motorSpeed: 0.5,
       gauge_tempA72Color: 'positive',
       gauge_tempA53Color: 'positive',
       gauge_gpuTempColor: 'positive',
       gauge_cpuColor: 'positive',
       gauge_motorSpee: 'positive',
+      gpuMemColor: 'positive',
+      ramMemColor: 'positive',
       progress1: 0.8,
       progress2: 0.5,
       progress3: 0.3,
       camera: null,
       deviceId: null,
-      devices: [],
-      // memory chart
-      loading: true,
-      rambar_maxpoints: 20,
-      rambar_localpoint: 0,
-      rambar: {
-        title: {
-          text: ''
-        },
-        tooltip: {},
-        xAxis: {
-          data: [0, 1, 2]
-        },
-        yAxis: {
-          max: 4,
-          min: 0,
-          name: 'Gigabytes'
-        },
-        series: [{
-          name: 'usage',
-          type: 'line',
-          data: [0, 1, 2]
-        }]
-      },
-      // gpu chart
-      gpumemloading: true,
-      gpumem_maxpoints: 20,
-      gpumem_localpoint: 0,
-      gpumembar: {
-        title: {
-          text: ''
-        },
-        tooltip: {},
-        xAxis: {
-          data: [0, 1, 2]
-        },
-        yAxis: {
-          max: 100,
-          min: 0,
-          name: 'Percentage'
-        },
-        series: [{
-          name: 'usage',
-          type: 'line',
-          data: [0, 1, 2]
-        }]
-      }
+      devices: []
     }
   },
   computed: {
@@ -519,9 +479,9 @@ export default {
   },
   methods: {
     setDynamicGaugeColor (tmp, color) {
-      if (tmp > 80.0) {
+      if (tmp > 0.8) {
         this[color] = 'negative'
-      } else if (tmp > 50) {
+      } else if (tmp > 0.5) {
         this[color] = 'warning'
       } else {
         this[color] = 'positive'
@@ -534,45 +494,19 @@ export default {
         axios.get('http://' + this.restAddr + '/info')
           .then(response => {
             if (response.data.gpu.temperatures !== undefined) {
-              me.gpuTemp = response.data.gpu.temperatures.GPU0
-              me.tempA72 = response.data.cpu.temperatures.A72
-              me.tempA53 = response.data.cpu.temperatures.A53
-              me.cpu_usage = response.data.cpu.usage
-              let free = response.data.ram.free
-              let total = response.data.ram.total
-
-              let use = total - free
-
-              me.rambar_localpoint++
-              if (me.rambar_localpoint >= me.rambar_maxpoints) {
-                me.rambar_localpoint = 0
-              }
-
-              me.gpumem_localpoint++
-              if (me.gpumem_localpoint >= me.gpumem_maxpoints) {
-                me.gpumem_localpoint = 0
-              }
-
-              // add data
-              me.gpumembar.xAxis.data[me.gpumem_localpoint] = me.gpumem_localpoint
-              me.gpumembar.series[0].data[me.gpumem_localpoint] = response.data.gpu.memoryUsage
-
-              // add data
-              me.rambar.xAxis.data[me.rambar_localpoint] = me.rambar_localpoint
-              me.rambar.series[0].data[me.rambar_localpoint] = use
-
-              // react
-              me.gpumembar.series[0].data.push(0)
-              me.gpumembar.series[0].data.splice(me.gpumembar.series[0].data.length - 1, 1)
-
-              // react
-              me.rambar.series[0].data.push(0)
-              me.rambar.series[0].data.splice(me.rambar.series[0].data.length - 1, 1)
+              me.gpuTemp = (response.data.gpu.temperatures.GPU0 / 100.0).toFixed(2)
+              me.tempA72 = (response.data.cpu.temperatures.A72 / 100.0).toFixed(2)
+              me.tempA53 = (response.data.cpu.temperatures.A53 / 100.0).toFixed(2)
+              me.cpu_usage = (response.data.cpu.usage / 100.0).toFixed(2)
+              me.gpuMem = (response.data.gpu.memoryUsage / 100).toFixed(2)
+              me.ramMem = (response.data.ram.usage / 100).toFixed(2)
 
               me.setDynamicGaugeColor(me.gpuTemp, 'gauge_gpuTempColor')
               me.setDynamicGaugeColor(me.tempA72, 'gauge_tempA72Color')
               me.setDynamicGaugeColor(me.tempA53, 'gauge_tempA53Color')
               me.setDynamicGaugeColor(me.cpu_usage, 'gauge_cpuColor')
+              me.setDynamicGaugeColor(me.ramMem, 'ramMemColor')
+              me.setDynamicGaugeColor(me.gpuMem, 'gpuMemColor')
             }
           })
       }, 2000)
