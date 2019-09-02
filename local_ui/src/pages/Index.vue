@@ -5,7 +5,7 @@
   <q-page class="q-pa-md row items-start q-gutter-md flex flex-center">
 
     <q-img
-      src="../assets/partneraws2.png"
+      src="statics/partneraws2.png"
       class="fixed-top"
       style="height: 215px; width: 479px;"
     />
@@ -17,7 +17,7 @@
         <!-- pasta1  -->
         <q-card class="my-card text-white">
           <q-img
-            src="../assets/farfalle.png"
+            src="statics/farfalle.png"
             style="height: 212px; width: 212px;"
           >
             <div class="absolute-top text-subtitle2 text-center">
@@ -36,7 +36,7 @@
         <!-- pasta2  -->
         <q-card class="my-card text-white">
           <q-img
-            src="../assets/fusine.png"
+            src="statics/fusine.png"
             style="height: 212px; width: 212px;"
           >
             <div class="absolute-top text-subtitle2 text-center">
@@ -55,7 +55,7 @@
         <!-- pasta3  -->
         <q-card class="my-card text-white">
           <q-img
-            src="../assets/idonotknow.png"
+            src="statics/idonotknow.png"
             style="height: 212px; width: 212px;"
           >
             <div class="absolute-top text-subtitle2 text-center">
@@ -531,47 +531,15 @@ export default {
       setInterval(() => {
         const me = this
         // rest for gpu info
-        axios.get('http://' + this.restAddr + '/gpu')
+        axios.get('http://' + this.restAddr + '/info')
           .then(response => {
-            if (response.data.temperatures !== undefined) {
-              me.gpuTemp = response.data.temperatures.GPU0
-
-              me.gpumem_localpoint++
-              if (me.gpumem_localpoint >= me.gpumem_maxpoints) {
-                me.gpumem_localpoint = 0
-              }
-
-              me.gpumembar.xAxis.data[me.gpumem_localpoint] = me.gpumem_localpoint
-              me.gpumembar.series[0].data[me.gpumem_localpoint] = response.data.memoryUsage
-
-              // react
-              me.gpumembar.series[0].data.push(0)
-              me.gpumembar.series[0].data.splice(me.gpumembar.series[0].data.length - 1, 1)
-
-              me.setDynamicGaugeColor(me.gpuTemp, 'gauge_gpuTempColor')
-            }
-          })
-
-        // rest for cpu
-        axios.get('http://' + this.restAddr + '/cpu')
-          .then(response => {
-            if (response.data.temperatures !== undefined) {
-              me.tempA72 = response.data.temperatures.A72
-              me.tempA53 = response.data.temperatures.A53
-              me.cpu_usage = response.data.usage
-
-              me.setDynamicGaugeColor(me.tempA72, 'gauge_tempA72Color')
-              me.setDynamicGaugeColor(me.tempA53, 'gauge_tempA53Color')
-              me.setDynamicGaugeColor(me.cpu_usage, 'gauge_cpuColor')
-            }
-          })
-
-        // rest for cpu
-        axios.get('http://' + this.restAddr + '/ram')
-          .then(response => {
-            if (response.data.usage !== undefined) {
-              let free = response.data.free
-              let total = response.data.total
+            if (response.data.gpu.temperatures !== undefined) {
+              me.gpuTemp = response.data.gpu.temperatures.GPU0
+              me.tempA72 = response.data.cpu.temperatures.A72
+              me.tempA53 = response.data.cpu.temperatures.A53
+              me.cpu_usage = response.data.cpu.usage
+              let free = response.data.ram.free
+              let total = response.data.ram.total
 
               let use = total - free
 
@@ -580,15 +548,34 @@ export default {
                 me.rambar_localpoint = 0
               }
 
+              me.gpumem_localpoint++
+              if (me.gpumem_localpoint >= me.gpumem_maxpoints) {
+                me.gpumem_localpoint = 0
+              }
+
+              // add data
+              me.gpumembar.xAxis.data[me.gpumem_localpoint] = me.gpumem_localpoint
+              me.gpumembar.series[0].data[me.gpumem_localpoint] = response.data.gpu.memoryUsage
+
+              // add data
               me.rambar.xAxis.data[me.rambar_localpoint] = me.rambar_localpoint
               me.rambar.series[0].data[me.rambar_localpoint] = use
 
               // react
+              me.gpumembar.series[0].data.push(0)
+              me.gpumembar.series[0].data.splice(me.gpumembar.series[0].data.length - 1, 1)
+
+              // react
               me.rambar.series[0].data.push(0)
               me.rambar.series[0].data.splice(me.rambar.series[0].data.length - 1, 1)
+
+              me.setDynamicGaugeColor(me.gpuTemp, 'gauge_gpuTempColor')
+              me.setDynamicGaugeColor(me.tempA72, 'gauge_tempA72Color')
+              me.setDynamicGaugeColor(me.tempA53, 'gauge_tempA53Color')
+              me.setDynamicGaugeColor(me.cpu_usage, 'gauge_cpuColor')
             }
           })
-      }, 1000)
+      }, 2000)
     },
     /* camera methods */
     onCapture () {
@@ -640,6 +627,7 @@ export default {
     }
 
     this.monitorCPUTemperature()
+    console.log('Created')
   }
 }
 </script>
