@@ -4,7 +4,7 @@
     <q-img
       src="statics/partneraws2.png"
       class="fixed-top"
-      style="height: 215px; width: 479px;"
+      style="height: 215px; width: 705px;"
     />
 
     <div class="q-pa-md q-gutter-md fallback">
@@ -439,7 +439,7 @@ export default {
   },
   data () {
     return {
-      restAddr: '10.42.0.248:5001',
+      restAddr: 'localhost:5001',
       tempA72: 0.0,
       tempA53: 0.0,
       cpu_usage: 0.0,
