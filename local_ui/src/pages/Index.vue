@@ -25,7 +25,7 @@
                 :value="progress1"
                 color="positive"
               />
-              <div class="text-white set-position">Confidence {{ progress1 * 100 }} %</div>
+              <div class="text-white set-position">Confidence {{ (progress1 * 100).toFixed(0) }} %</div>
             </div>
           </q-img>
         </q-card>
@@ -44,7 +44,7 @@
                 :value="progress2"
                 color="warning"
               />
-              <div class="text-white set-position">Confidence {{ progress2 * 100 }} %</div>
+              <div class="text-white set-position">Confidence {{ (progress2 * 100).toFixed(0) }} %</div>
             </div>
           </q-img>
         </q-card>
@@ -63,7 +63,7 @@
                 :value="progress3"
                 color="negative"
               />
-              <div class="text-white set-position">Confidence {{ progress3 * 100 }} %</div>
+              <div class="text-white set-position">Confidence {{ (progress3 * 100).toFixed(0) }} %</div>
             </div>
           </q-img>
         </q-card>
@@ -102,7 +102,7 @@
               :value="motorSpeed"
               color="warning"
             />
-            <div class="text-white no-gauge">{{ motorSpeed * 100 }} %</div>
+            <div class="text-white no-gauge">{{ (motorSpeed * 100).toFixed(0) }} %</div>
           </div>
         </q-card>
 
@@ -139,7 +139,7 @@
               :value="tempA72"
               :color="gauge_tempA72Color"
             />
-            <div class="text-white no-gauge">{{ tempA72 * 100 }} %</div>
+            <div class="text-white no-gauge">{{ (tempA72 * 100).toFixed(0) }} %</div>
           </div>
         </q-card>
 
@@ -174,7 +174,7 @@
               :value="tempA53"
               :color="gauge_tempA53Color"
             />
-            <div class="text-white no-gauge">{{ tempA53 * 100 }} %</div>
+            <div class="text-white no-gauge">{{ (tempA53 * 100).toFixed(0) }} %</div>
           </div>
         </q-card>
 
@@ -207,7 +207,7 @@
               :value="gpuTemp"
               :color="gauge_gpuTempColor"
             />
-            <div class="text-white no-gauge">{{ gpuTemp * 100 }} %</div>
+            <div class="text-white no-gauge">{{ (gpuTemp * 100).toFixed(0) }} %</div>
           </div>
         </q-card>
 
@@ -238,11 +238,12 @@
             <q-linear-progress
               dark
               rounded
+              class="notransition"
               style="height: 40px"
               :value="cpu_usage"
               :color="gauge_cpuColor"
             />
-            <div class="text-white no-gauge">{{ cpu_usage * 100 }} %</div>
+            <div class="text-white no-gauge">{{ (cpu_usage * 100).toFixed(0) }} %</div>
           </div>
         </q-card>
 
@@ -279,7 +280,7 @@
               :value="ramMem"
               :color="ramMemColor"
             />
-            <div class="text-white no-chart">{{ ramMem * 100 }} %</div>
+            <div class="text-white no-chart">{{ (ramMem * 100).toFixed(0) }} %</div>
           </div>
         </q-card>
 
@@ -312,7 +313,7 @@
               :value="gpuMem"
               :color="gpuMemColor"
             />
-            <div class="text-white no-chart">{{ gpuMem * 100 }} %</div>
+            <div class="text-white no-chart">{{ (gpuMem * 100).toFixed(0) }} %</div>
           </div>
         </q-card>
 
@@ -416,6 +417,13 @@
   padding: 15px;
   font-weight: bold;
   font-size: 20px;
+}
+
+.notransition {
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -o-transition: none !important;
+  transition: none !important;
 }
 </style>
 
