@@ -139,7 +139,7 @@
               :value="tempA72"
               :color="gauge_tempA72Color"
             />
-            <div class="text-white no-gauge">{{ (tempA72 * 100).toFixed(0) }} %</div>
+            <div class="text-white no-gauge">{{ (tempA72 * 100).toFixed(0) }} °C</div>
           </div>
         </q-card>
 
@@ -174,7 +174,7 @@
               :value="tempA53"
               :color="gauge_tempA53Color"
             />
-            <div class="text-white no-gauge">{{ (tempA53 * 100).toFixed(0) }} %</div>
+            <div class="text-white no-gauge">{{ (tempA53 * 100).toFixed(0) }} °C</div>
           </div>
         </q-card>
 
@@ -207,7 +207,7 @@
               :value="gpuTemp"
               :color="gauge_gpuTempColor"
             />
-            <div class="text-white no-gauge">{{ (gpuTemp * 100).toFixed(0) }} %</div>
+            <div class="text-white no-gauge">{{ (gpuTemp * 100).toFixed(0) }} °C</div>
           </div>
         </q-card>
 
