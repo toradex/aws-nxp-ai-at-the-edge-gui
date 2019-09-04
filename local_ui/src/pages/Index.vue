@@ -268,7 +268,7 @@
               <q-item-label
                 style="color: white;"
                 caption
-              >Usage per time </q-item-label>
+              >Usage percent </q-item-label>
             </q-item-section>
           </q-item>
 
@@ -301,7 +301,7 @@
               <q-item-label
                 style="color: white;"
                 caption
-              >Usage per time </q-item-label>
+              >Usage percent </q-item-label>
             </q-item-section>
           </q-item>
 
