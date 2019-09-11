@@ -1,0 +1,11 @@
+docker run --name inference \
+--rm \
+-it \
+--privileged \
+--network="host" \
+-v /tmp:/tmp \
+-v /dev:/dev \
+-v /sys:/sys \
+-v /home/torizon/gstreamer_bb:/project \
+--entrypoint=bash \
+10.22.1.183:5000/torizon/inference

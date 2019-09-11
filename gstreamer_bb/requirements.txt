@@ -1,4 +1,6 @@
-pycairo==1.17.1
 pygobject>=3.20.0
-Pillow>=5.1.0
+gluoncv
+flask
+flask-jsonpify
+flask-restful
 psutil

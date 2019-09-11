@@ -10,21 +10,23 @@ overlays.py)
 import gi
 gi.require_foreign('cairo')
 #gi.require_version('Gdk', '3.0')
-gi.require_version('Gtk', '3.0')
+#gi.require_version('Gtk', '3.0')
 gi.require_version('Gst', '1.0')
 gi.require_version('GstApp', '1.0')
 gi.require_version('GstVideo', '1.0')
 
-from gi.repository import Gtk
+#from gi.repository import Gtk
 from gi.repository import GstVideo
 from gi.repository import GstApp
 from gi.repository import Gst
 from gi.repository import GObject
-from gi.repository import Gdk
+#from gi.repository import Gdk
 import threading
 import logging
 import ctypes
 import collections
+import time
+import cairo
 
 #from gi.repository import GdkX11
 
@@ -146,7 +148,7 @@ class GStreamerPipeline():
         if message.get_structure().get_name() == "prepare-window-handle":
             imagesink = message.src
             imagesink.set_property("force-aspect-ratio", True)
-            imagesink.set_window_handle(self.get_property("window").get_xid())
+            #imagesink.set_window_handle(self.get_property("window").get_xid())
 
     def _on_key_press_event(self, widget, key_event):
         """GTK callback for processing window key event messages"""
@@ -182,12 +184,21 @@ class GStreamerPipeline():
         if device_name is not None:
             v4l2src.props.device = device_name
         capsfilter = self._make_element('capsfilter', 'source_capsfilter')
-        caps_settings = "video/x-raw,width=640,height=480"
+        caps_settings = "video/x-raw,width=320,height=240"
         capsfilter.props.caps = Gst.Caps.from_string(caps_settings)
+
+        #videorate = self._make_element('videorate', 'source_videorate')
+        #capsvideorate = self._make_element('capsfilter', 'source_capsvideorate')
+        #capsvideorate.props.caps = Gst.Caps.from_string('video/x-raw,framerate=1/4')
+
         #jpegdecoder = self._make_element('jpegdec', 'source_jpegdec')
         self._link(v4l2src, capsfilter)
+        #self._link(capsfilter, videorate)
+        #self._link(videorate, capsvideorate)
         #self._link(capsfilter, jpegdecoder)
         return capsfilter
+        #return capsvideorate
+        #return jpegdecoder
 
     def _make_video_input_source(self, video_input):
         """Create the GStreamer elements necessary to source from a video file
@@ -235,29 +246,63 @@ class GStreamerPipeline():
         """
         queue = self._make_element('queue', 'appsink_queue')
         queue.props.max_size_buffers = 1
-        #converter = self._make_element('videoconvert', 'appsink_converter')
-        #capsfilter = self._make_element('capsfilter', 'appsink_capsfilter')
-        #capsfilter.props.caps = Gst.Caps.from_string('video/x-raw,format=RGB')
+        #upload = self._make_element('glupload', 'appsink_upload')
+        converter = self._make_element('videoconvert', 'appsink_converter')
+        capsfilter = self._make_element('capsfilter', 'appsink_capsfilter')
+        capsfilter.props.caps = Gst.Caps.from_string('video/x-raw,width=320,height=240')
+        #download = self._make_element('gldownload', 'appsink_down')
+        jpegenc = self._make_element('jpegenc', 'anaconda')
         appsink = self._make_element('appsink', 'appsink')
         appsink.props.max_buffers = 1
         appsink.props.drop = True  # Drop old buffers when queue is full
-        #self._link(queue, converter)
+
+        #self._link(queue, upload)
+        #self._link(upload, converter)
+        self._link(queue, converter)
+        self._link(converter, capsfilter)
+        #self._link(capsfilter, appsink)
+        self._link(capsfilter, jpegenc)
+        self._link(jpegenc, appsink)
+        #self._link(download, appsink)
+
+        #self._link(converter, jpegenc)
+        #self._link(queue, jpegenc)
+        #self._link(jpegenc, appsink)
         #self._link(converter, capsfilter)
         #self._link(capsfilter, appsink)
-        self._link(queue, appsink)
+        
+        #self._link(queue, appsink)
+        #self._link(appsink, capsfilter)
+
         self._appsink = appsink
+        #return appsink
         return queue
 
     def _make_auto_sink(self):
         """Creates an automatic sink that displays video to the screen
-        AQUI EU VOU BRILHAR MUITO NO CORINTHIANS
         """
         converter = self._make_element('autovideoconvert', 'auto_sink_converter')
         #sink = self._make_element('autovideosink', 'auto_sink')
+        #sink = self._make_element('glimagesink', 'auto_sink')
+        #converter = self._make_element('videoconvert', 'auto_converter')
+        #capsfilter = self._make_element('capsfilter', 'auto_capsfilter')
+        #capsfilter.props.caps = Gst.Caps.from_string('video/x-raw,format=RGB,width=320,height=240')
+        #sink = self._make_element('glimagesink', 'auto_sink')
         sink = self._make_element('v4l2sink', 'auto_sink')
         sink.props.device = "/dev/video14"
+        #sink.props.sync = False
+        #sink.set_property('io-mode', 2)
+        #sink.set_property('render-delay', 2000000000)
+        #sink.set_property('ts-offset', 2000000000)
         self._link(converter, sink)
         return converter
+        #return sink
+
+        #self._link(converter, capsfilter)
+        #self._link(capsfilter, sink)
+
+        #return converter
+        
 
     def _set_state(self, state):
         """Internal helper that sets the pipeline state to a Gst.State"""
@@ -284,8 +329,8 @@ class GStreamerPipeline():
         # Process GTK events so that the window keeps updating
         # Doing this instead of calling Gtk.main_loop() allows us to evaluate
         # the model on the main thread
-        while Gtk.events_pending():
-            Gtk.main_iteration_do(False)
+        #while Gtk.events_pending():
+        #    Gtk.main_iteration_do(False)
 
         # Get a sample from the pipeline
         _, cur_state, _ = self._pipeline.get_state(Gst.SECOND)
@@ -357,13 +402,62 @@ class VideoOverlayPipeline(GStreamerPipeline):
         """Creates a cairo overlay element and hooks up the draw signal"""
         queue = self._make_element('queue', 'overlay_queue')
         queue.props.max_size_buffers = 1
-        #converter = self._make_element('videoconvert', 'overlay_converter')
+        converter = self._make_element('videoconvert', 'overlay_converter')
+        capsfilter = self._make_element('capsfilter', 'overlay_capsfilter')
+        capsfilter.props.caps = Gst.Caps.from_string('video/x-raw,width=320,height=240')
+
+        #videorate = self._make_element('videorate', 'source_videorate')
+        #capsvideorate = self._make_element('capsfilter', 'source_capsvideorate')
+        #capsvideorate.props.caps = Gst.Caps.from_string('video/x-raw,framerate=1/2')
+
         overlay = self._make_element('cairooverlay', 'overlay')
         overlay.connect('draw', self._draw_overlays)
-        #self._link(queue, converter)
+        self._link(queue, converter)
+        self._link(converter, capsfilter)
+        
+        #self._link(capsfilter, videorate)
+        #self._link(videorate, capsvideorate)
+        #self._link(capsvideorate, overlay)
+        
+        #
+        self._link(capsfilter, overlay)
         #self._link(converter, overlay)
-        self._link(queue, overlay)
+        
+        #self._link(queue, overlay)
+        self._overlay = overlay
+        
         return queue, overlay
+
+    def _on_need_buffer(self, source, arg0):
+        #print('need')
+        self._can = True
+        #self._render()
+        #print('rendered')
+        #source.emit("push-buffer", self._gstBuffer)
+
+    def _on_en_data(self, source):
+        print('enough')
+        self._can = False
+
+    def _render(self, frameData):
+        #print('render')
+        if self._can == True:
+            cr = cairo.Context(self._buffer)
+            for overlay in self._overlays:
+                    overlay.draw(None, cr, time.time(), 0)
+            #self._gstBuffer = Gst.Buffer.new_allocate(None, 240 * 320 * 4, None)
+            #self._gstBuffer.fill(0, self._buffer.get_data())
+            buf = Gst.Buffer.new_wrapped(self._buffer.get_data())
+            #gstb.duration = Gst.CLOCK_TIME_NONE
+            #gstb.offset = 1
+            
+            caps_struct = Gst.Structure.new_empty('video/x-raw')
+            #caps_struct.set_value("format", "jpeg")
+            caps_struct.set_value("width", 320)
+            caps_struct.set_value("height", 240)
+            frame_caps = Gst.Caps.new_empty()
+            frame_caps.append_structure(caps_struct)
+            self._source.push_buffer(buf)
 
     # matheus.bc
     def _build_pipeline(self, webcam_device, video_input):
@@ -374,21 +468,61 @@ class VideoOverlayPipeline(GStreamerPipeline):
         self._pipeline = pipeline
 
         source = self._make_video_source(webcam_device, video_input)
-        tee_no_overlay = self._make_element('tee', 'tee_no_overlay')
+        #tee_no_overlay = self._make_element('tee', 'tee_no_overlay')
         appsink = self._make_appsink()
-        overlay_in, overlay_out = self._make_overlay()
+        
+        appsrc = self._make_element('appsrc', 'myappsrc')
+        self._source = appsrc
+        #self._source.set_property('format', 4)
+        #self._source.set_property('stream-type', 0)
+        self._source.set_property('is-live', True)
+        #self._source.set_property('num-buffers', -1)
+        #self._source.set_property('block', True)
+        self._source.set_property('caps', Gst.Caps.from_string('video/x-raw,format=RGBA,bpp=32,depth=32,width=320,height=240,red_mask=-16777216,green_mask=16711680,blue_mask=65280,alpha_mask=255,endianness=4321,framerate=1/1'))
+        self._buffer = None
+        self._gstBuffer = Gst.Buffer.new_allocate(None, 240 * 320 * 4, None)
+        image = cairo.ImageSurface(cairo.FORMAT_ARGB32, 320, 240)
+        self._buffer = image
+        self._can = False
+        appsrc.connect('need-data', self._on_need_buffer)
+        appsrc.connect('enough-data', self._on_en_data)
+        #capsfilter = self._make_element('capsfilter', 'auto_capsfilter')
+        #capsfilter.props.caps = Gst.Caps.from_string('video/x-raw,format=RGB,width=320,height=240,framerate=10/1')
+        converter = self._make_element('videoconvert', 'overlay_converter')
+        capsfilter2 = self._make_element('capsfilter', 'overlay2_capsfilter')
+        capsfilter2.props.caps = Gst.Caps.from_string('video/x-raw,format=RGB,width=320,height=240,framerate=1/1')
+        queue2 = self._make_element('queue', 'overlay_queue2')
+        queue2.props.max_size_buffers = 1
+
+        #overlay_in, overlay_out = self._make_overlay()
         auto_sink = self._make_auto_sink()
 
-        self._link(source, tee_no_overlay)
-        self._link(tee_no_overlay, appsink)
-        self._link(tee_no_overlay, overlay_in)
-        self._link(overlay_out, auto_sink)
+        ## bad
+        self._link(source, appsink)
+        self._link(appsrc, queue2)
+        self._link(queue2, converter)
+        self._link(converter, capsfilter2)
+        self._link(capsfilter2, auto_sink)
+
+        ## good
+        #self._link(source, tee_no_overlay)
+        #self._link(tee_no_overlay, appsink)
+        #self._link(tee_no_overlay, overlay_in)
+        #self._link(overlay_out, auto_sink)
+
+        # no more tears
+        #self._link(source, appsink)
+        #self._link(appsink, overlay_out)
+        #sself._link(overlay_out, auto_sink)
+
 
     def _draw_overlays(self, surface, cr, timestamp, duration):
         """GStreamer callback for drawing our overlays to the cairooverlay"""
         with self._overlays_lock:
             for overlay in self._overlays:
                 overlay.draw(surface, cr, timestamp, duration)
+
+        print('DRAW\t' + str(time.time()))
 
     ############################
     # Start of public class API
@@ -409,6 +543,7 @@ class VideoOverlayPipeline(GStreamerPipeline):
         The overlay will be drawn every tick of the GStreamer pipeline until
         removed or cleared.
         """
+        #print("newover")
         with self._overlays_lock:
             self._overlays.append(overlay)
 

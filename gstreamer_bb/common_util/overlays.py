@@ -30,7 +30,7 @@ class BoundingBox:
 
     `class_id` is used to determine the color of the bounding box.
     """
-    LINE_WIDTH = 6
+    LINE_WIDTH = 3
 
     def __init__(self, x=0, y=0, width=0, height=0, text=None,
                  bg_color=(1.0, 1.0, 1.0)):

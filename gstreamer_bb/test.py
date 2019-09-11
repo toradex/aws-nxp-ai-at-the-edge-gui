@@ -8,52 +8,81 @@ Cairo methods:
 https://www.cairographics.org/samples/
 """
 
-from gi.repository import Gst
-import cairo
-import gi
+# gst-launch-1.0 v4l2src device=/dev/video14 ! autovideoconvert ! glimagesink
+
+import common_util.overlays as overlays
+import common_util.gstreamer_video_pipeline as gst_pipeline
+import common_util.colors as colors
+import argparse
+import gc
+import sys
+
+# images
+from PIL import Image
+from io import BytesIO
+import io
+import base64
+import pickle
+from pprint import pprint
+
+import os
+#import mxnet as mx
+import warnings
+#from mxnet import gluon
+#from mxnet import nd
+#from gluoncv.data.transforms import image as timage
+#from gluoncv import data
+import pickle
 import time
+import array as arr
+from queue import Queue
+import requests
+import cairo
+import numpy
+
+from gi.repository import Gst
+import gi
 gi.require_version('Gst', '1.0')
-gi.require_foreign('cairo')
 
+if (sys.version_info[0] < 3):
+    sys.exit("This sample requires Python 3. Please install Python 3!")
 
-class GstCairoExample(object):
-    """Example class to generate user interface and create new GStreamer pipeline"""
+def color_by_id(id):
+    """Returns a somewhat-unique color for the given class ID"""
+    return [c / 255 for c in colors.COLORS[id % len(colors.COLORS)]]
 
-    def __init__(self):
-        self.pos = 0
-        # self.pipeline = Gst.parse_launch(
-        #    'v4l2src device=/dev/video4 ! video/x-raw,width=640,height=480 ! cairooverlay name=overlay ! autovideoconvert ! v4l2sink device=/dev/video14')
-        self.pipeline = Gst.parse_launch(
-            'v4l2src device=/dev/video0 ! videoconvert ! cairooverlay name=overlay ! videoconvert ! xvimagesink')
-        # self.pipeline = Gst.parse_launch('videotestsrc ! cairooverlay name=overlay ! videoconvert ! xvimagesink')
-        cairo_overlay = self.pipeline.get_by_name('overlay')
-        cairo_overlay.connect('draw', self.on_draw)
-        self.pipeline.set_state(Gst.State.PLAYING)
+def main():
+    print("Testing...")
 
-    def on_draw(self, _overlay, context, _timestamp, _duration):
-        """Each time the 'draw' signal is emitted"""
-        print(_timestamp)
-        if self.pos > 150:
-            self.pos = 0
-        self.pos += 1
-        # context.select_font_face(
-        #    'Open Sans', cairo.FONT_SLANT_NORMAL, cairo.FONT_WEIGHT_NORMAL)
-        # context.set_font_size(40)
-        #context.move_to(self.pos, 100)
-        # context.text_path('TORADEX')
-        #context.set_source_rgb(0.5, 0.5, 1)
-        # context.fill_preserve()
-        #context.set_source_rgb(0, 0, 0)
-        # context.set_line_width(1)
+    with gst_pipeline.VideoOverlayPipeline(
+            "Pasta demo",
+            "/dev/video0") as pipeline:
 
-        # bound boxes
+        while pipeline.running:
+            # Get a frame of video from the pipeline.
+            frame = pipeline.get_frame()
+            if frame is None:
+                print("Frame is none ...")
+                break
 
-        context.stroke()
+            f1 = open('/dev/shm/tmp_image.jpg', 'wb')
+            f1.write(frame.data)
+            f1.close()
 
+            pipeline.clear_overlay()
+            pipeline.add_overlay(overlays.Text("Pasta Detection", x=0, y=0,
+                                              bg_color=color_by_id(-1)))
+            
+            # pill to pillow
+            im = Image.open('/dev/shm/tmp_image.jpg')
+            im.putalpha(256) # create alpha channel
+            arr = numpy.array(im)
+            height, width, channels = arr.shape
+            surface = cairo.ImageSurface.create_for_data(arr, cairo.FORMAT_RGB24, width, height)
+            pipeline._buffer = surface
 
-print('lets go')
-Gst.init(None)
-GstCairoExample()
+            pipeline._render(frame)
+            print('rendered')
 
-while True:
-    time.sleep(5)
+if (__name__ == "__main__"):
+    main()
