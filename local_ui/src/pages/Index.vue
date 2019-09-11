@@ -137,16 +137,16 @@
                 square
                 size="48px"
               >
-                <img src="~assets/thermometer.svg">
+                <img src="~assets/lamp.svg">
               </q-avatar>
             </q-item-section>
 
             <q-item-section>
-              <q-item-label>A72 Dual Core</q-item-label>
+              <q-item-label>Conveyor Belt</q-item-label>
               <q-item-label
                 style="color: white;"
                 caption
-              >Temperature</q-item-label>
+              >LED Brightness</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -158,7 +158,7 @@
               :value="tempA72"
               :color="gauge_tempA72Color"
             />
-            <div class="text-white no-gauge">{{ (tempA72 * 100).toFixed(0) }} °C</div>
+            <div class="text-white no-gauge">{{ (tempA72 * 100).toFixed(0) }} %</div>
           </div>
         </q-card>
 
@@ -175,7 +175,7 @@
             </q-item-section>
 
             <q-item-section>
-              <q-item-label>A53 Quad Core</q-item-label>
+              <q-item-label>i.MX 8QM CPUs</q-item-label>
               <q-item-label
                 style="color: white;"
                 caption
@@ -519,22 +519,32 @@ export default {
         this[color] = 'positive'
       }
     },
+    setDynamicGaugeColorInvert (tmp, color) {
+      if (tmp > 0.8) {
+        this[color] = 'positive'
+      } else if (tmp > 0.5) {
+        this[color] = 'warning'
+      } else {
+        this[color] = 'negative'
+      }
+    },
     monitorCPUTemperature () {
       setInterval(() => {
         const me = this
-        // rest for gpu info
-        axios.get('http://' + this.restAddr + ':' + me.statusInfoPort + '/info')
+        // rest cpu, gpu info
+        axios.get('http://' + this.restAddr + ':' + me.statusInfoPort + '/all')
           .then(response => {
             if (response.data.gpu.temperatures !== undefined) {
               me.gpuTemp = (response.data.gpu.temperatures.GPU0 / 100.0).toFixed(2)
-              me.tempA72 = (response.data.cpu.temperatures.A72 / 100.0).toFixed(2)
+              let tempA72 = (response.data.cpu.temperatures.A72 / 100.0).toFixed(2)
               me.tempA53 = (response.data.cpu.temperatures.A53 / 100.0).toFixed(2)
               me.cpu_usage = (response.data.cpu.usage / 100.0).toFixed(2)
               me.gpuMem = (response.data.gpu.memoryUsage / 100).toFixed(2)
               me.ramMem = (response.data.ram.usage / 100).toFixed(2)
 
+              me.tempA53 = Math.max(me.tempA53, tempA72)
+
               me.setDynamicGaugeColor(me.gpuTemp, 'gauge_gpuTempColor')
-              me.setDynamicGaugeColor(me.tempA72, 'gauge_tempA72Color')
               me.setDynamicGaugeColor(me.tempA53, 'gauge_tempA53Color')
               me.setDynamicGaugeColor(me.cpu_usage, 'gauge_cpuColor')
               me.setDynamicGaugeColor(me.ramMem, 'ramMemColor')
@@ -542,10 +552,18 @@ export default {
             }
           })
 
+        // rest for the conveyor belt speed
         axios.get('http://' + this.restAddr2 + ':' + me.controlPort + '/cb')
           .then(response => {
             me.motorSpeed = (response.data.speed / 100.0).toFixed(2)
-            me.setDynamicGaugeColor(me.motorSpeed, 'gauge_motorSpee')
+            me.setDynamicGaugeColorInvert(me.motorSpeed, 'gauge_motorSpee')
+          })
+
+        // rest for the conveyior belt led brightness
+        axios.get('http://' + this.restAddr2 + ':' + me.controlPort + '/led')
+          .then(response => {
+            me.tempA72 = (response.data.brightness).toFixed(2)
+            me.setDynamicGaugeColorInvert(me.tempA72, 'gauge_tempA72Color')
           })
       }, 2000)
     },
