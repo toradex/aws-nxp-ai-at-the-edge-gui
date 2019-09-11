@@ -52,7 +52,7 @@
         <!-- pasta3  -->
         <q-card class="my-pasta text-white">
           <q-img
-            src="statics/idonotknow.png"
+            src="statics/shell.png"
             style="height: 212px; width: 212px;"
           >
             <div class="absolute-top text-subtitle2 text-center">
@@ -68,9 +68,32 @@
           </q-img>
         </q-card>
 
-        <!-- A53 temperatures  -->
+        <!-- pasta4  -->
+        <q-card class="my-pasta text-white">
+          <q-img
+            src="statics/elbow.png"
+            style="height: 212px; width: 212px;"
+          >
+            <div class="absolute-top text-subtitle2 text-center">
+              <q-linear-progress
+                dark
+                rounded
+                style="height: 20px"
+                :value="progress4"
+                color="negative"
+              />
+              <div class="text-white set-position">Confidence {{ (progress4 * 100).toFixed(0) }} %</div>
+            </div>
+          </q-img>
+        </q-card>
+
+      </div>
+
+      <!-- CPU INFO -->
+      <div class="q-pa-md row q-gutter-md justify-center">
+
+        <!-- Conveyor belt  -->
         <q-card
-          style="margin-top: 79px;"
           class="my-card text-white"
         >
           <q-item>
@@ -106,10 +129,6 @@
           </div>
         </q-card>
 
-      </div>
-
-      <!-- CPU INFO -->
-      <div class="q-pa-md row q-gutter-md justify-center">
         <!-- A72 temperatures  -->
         <q-card class="my-card text-white">
           <q-item>
@@ -211,6 +230,11 @@
           </div>
         </q-card>
 
+      </div>
+
+      <!-- CARDS FOR CHARTS USAGE -->
+      <div class="q-pa-md row q-gutter-md justify-center">
+
         <!-- CPU USAGE  -->
         <q-card class="my-card text-white">
           <q-item>
@@ -247,12 +271,8 @@
           </div>
         </q-card>
 
-      </div>
-
-      <!-- CARDS FOR CHARTS USAGE -->
-      <div class="q-pa-md row q-gutter-md justify-center">
         <!-- RAM memory usage  -->
-        <q-card class="text-white">
+        <q-card class="text-white my-card">
           <q-item>
             <q-item-section avatar>
               <q-avatar
@@ -272,7 +292,7 @@
             </q-item-section>
           </q-item>
 
-          <div class="row justify-center progressRAM no-gauge-distance">
+          <div class="row justify-center no-gauge-distance">
             <q-linear-progress
               dark
               rounded
@@ -280,12 +300,12 @@
               :value="ramMem"
               :color="ramMemColor"
             />
-            <div class="text-white no-chart">{{ (ramMem * 100).toFixed(0) }} %</div>
+            <div class="text-white no-gauge">{{ (ramMem * 100).toFixed(0) }} %</div>
           </div>
         </q-card>
 
         <!-- GPU memory usage  -->
-        <q-card class="text-white">
+        <q-card class="text-white my-card">
           <q-item>
             <q-item-section avatar>
               <q-avatar
@@ -305,7 +325,7 @@
             </q-item-section>
           </q-item>
 
-          <div class="row justify-center progressRAM no-gauge-distance">
+          <div class="row justify-center no-gauge-distance">
             <q-linear-progress
               dark
               rounded
@@ -313,7 +333,7 @@
               :value="gpuMem"
               :color="gpuMemColor"
             />
-            <div class="text-white no-chart">{{ (gpuMem * 100).toFixed(0) }} %</div>
+            <div class="text-white no-gauge">{{ (gpuMem * 100).toFixed(0) }} %</div>
           </div>
         </q-card>
 
@@ -449,7 +469,7 @@ export default {
       gpuTemp: 0.0,
       gpuMem: 0.0,
       ramMem: 0.0,
-      motorSpeed: 0.5,
+      motorSpeed: 0.0,
       gauge_tempA72Color: 'positive',
       gauge_tempA53Color: 'positive',
       gauge_gpuTempColor: 'positive',
@@ -460,6 +480,7 @@ export default {
       progress1: 0.8,
       progress2: 0.5,
       progress3: 0.3,
+      progress4: 0.5,
       camera: null,
       deviceId: null,
       devices: []
