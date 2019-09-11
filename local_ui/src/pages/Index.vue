@@ -100,7 +100,7 @@
               rounded
               style="height: 40px"
               :value="motorSpeed"
-              color="warning"
+              :color="gauge_motorSpee"
             />
             <div class="text-white no-gauge">{{ (motorSpeed * 100).toFixed(0) }} %</div>
           </div>
@@ -439,7 +439,10 @@ export default {
   },
   data () {
     return {
-      restAddr: 'localhost:5001',
+      restAddr: 'localhost',
+      restAddr2: 'localhost',
+      statusInfoPort: '5001',
+      controlPort: '5002',
       tempA72: 0.0,
       tempA53: 0.0,
       cpu_usage: 0.0,
@@ -499,7 +502,7 @@ export default {
       setInterval(() => {
         const me = this
         // rest for gpu info
-        axios.get('http://' + this.restAddr + '/info')
+        axios.get('http://' + this.restAddr + ':' + me.statusInfoPort + '/info')
           .then(response => {
             if (response.data.gpu.temperatures !== undefined) {
               me.gpuTemp = (response.data.gpu.temperatures.GPU0 / 100.0).toFixed(2)
@@ -516,6 +519,12 @@ export default {
               me.setDynamicGaugeColor(me.ramMem, 'ramMemColor')
               me.setDynamicGaugeColor(me.gpuMem, 'gpuMemColor')
             }
+          })
+
+        axios.get('http://' + this.restAddr2 + ':' + me.controlPort + '/cb')
+          .then(response => {
+            me.motorSpeed = (response.data.speed / 100.0).toFixed(2)
+            me.setDynamicGaugeColor(me.motorSpeed, 'gauge_motorSpee')
           })
       }, 2000)
     },
