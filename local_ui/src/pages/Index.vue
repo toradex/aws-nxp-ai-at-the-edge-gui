@@ -23,7 +23,7 @@
                 rounded
                 style="height: 20px"
                 :value="progress1"
-                color="positive"
+                :color="p1color"
               />
               <div class="text-white set-position">Confidence {{ (progress1 * 100).toFixed(0) }} %</div>
             </div>
@@ -42,7 +42,7 @@
                 rounded
                 style="height: 20px"
                 :value="progress2"
-                color="warning"
+                :color="p2color"
               />
               <div class="text-white set-position">Confidence {{ (progress2 * 100).toFixed(0) }} %</div>
             </div>
@@ -61,7 +61,7 @@
                 rounded
                 style="height: 20px"
                 :value="progress3"
-                color="negative"
+                :color="p3color"
               />
               <div class="text-white set-position">Confidence {{ (progress3 * 100).toFixed(0) }} %</div>
             </div>
@@ -80,7 +80,7 @@
                 rounded
                 style="height: 20px"
                 :value="progress4"
-                color="negative"
+                :color="p4color"
               />
               <div class="text-white set-position">Confidence {{ (progress4 * 100).toFixed(0) }} %</div>
             </div>
@@ -158,7 +158,7 @@
               :value="tempA72"
               :color="gauge_tempA72Color"
             />
-            <div class="text-white no-gauge">{{ (tempA72 * 100).toFixed(0) }} %</div>
+            <div class="text-white no-gauge">{{ tempA72 }} %</div>
           </div>
         </q-card>
 
@@ -461,8 +461,10 @@ export default {
     return {
       restAddr: 'localhost',
       restAddr2: 'localhost',
+      restAddr3: 'localhost',
       statusInfoPort: '5001',
       controlPort: '5002',
+      inferencePort: '5003',
       tempA72: 0.0,
       tempA53: 0.0,
       cpu_usage: 0.0,
@@ -477,10 +479,14 @@ export default {
       gauge_motorSpee: 'positive',
       gpuMemColor: 'positive',
       ramMemColor: 'positive',
-      progress1: 0.8,
-      progress2: 0.5,
-      progress3: 0.3,
-      progress4: 0.5,
+      progress1: 0.0,
+      progress2: 0.0,
+      progress3: 0.0,
+      progress4: 0.0,
+      p1color: 'positive',
+      p2color: 'positive',
+      p3color: 'positive',
+      p4color: 'positive',
       camera: null,
       deviceId: null,
       devices: []
@@ -564,6 +570,33 @@ export default {
           .then(response => {
             me.tempA72 = (response.data.brightness).toFixed(2)
             me.setDynamicGaugeColorInvert(me.tempA72, 'gauge_tempA72Color')
+          })
+
+        // rest for the inference data
+        axios.get('http://' + this.restAddr3 + ':' + me.inferencePort + '/inference/last')
+          .then(response => {
+            if (response.data.last && response.data.last.length > 0) {
+              for (var i = 0; i < response.data.last.length; i++) {
+                var item = response.data.last[i]
+
+                if (item.object === 'elbow') {
+                  me.progress4 = parseFloat(item.score.replace('[', '').replace(']', '')).toFixed(2)
+                } else if (item.object === 'farfalle') {
+                  me.progress1 = parseFloat(item.score.replace('[', '').replace(']', '')).toFixed(2)
+                } else if (item.object === 'shell') {
+                  me.progress3 = parseFloat(item.score.replace('[', '').replace(']', '')).toFixed(2)
+                } else if (item.object === 'penne') {
+                  me.progress2 = parseFloat(item.score.replace('[', '').replace(']', '')).toFixed(2)
+                }
+
+                console.log('REST INF OK')
+              }
+            }
+
+            me.setDynamicGaugeColorInvert(me.progress1, 'p1color')
+            me.setDynamicGaugeColorInvert(me.progress2, 'p2color')
+            me.setDynamicGaugeColorInvert(me.progress3, 'p3color')
+            me.setDynamicGaugeColorInvert(me.progress4, 'p4color')
           })
       }, 2000)
     },
