@@ -250,6 +250,7 @@ class GStreamerPipeline():
         converter = self._make_element('videoconvert', 'appsink_converter')
         capsfilter = self._make_element('capsfilter', 'appsink_capsfilter')
         capsfilter.props.caps = Gst.Caps.from_string('video/x-raw,width=320,height=240')
+        #capsfilter.props.caps = Gst.Caps.from_string('video/x-raw,format=RGB,width=320,height=240')
         #download = self._make_element('gldownload', 'appsink_down')
         jpegenc = self._make_element('jpegenc', 'anaconda')
         appsink = self._make_element('appsink', 'appsink')
@@ -490,7 +491,7 @@ class VideoOverlayPipeline(GStreamerPipeline):
         #capsfilter.props.caps = Gst.Caps.from_string('video/x-raw,format=RGB,width=320,height=240,framerate=10/1')
         converter = self._make_element('videoconvert', 'overlay_converter')
         capsfilter2 = self._make_element('capsfilter', 'overlay2_capsfilter')
-        capsfilter2.props.caps = Gst.Caps.from_string('video/x-raw,format=RGB,width=320,height=240,framerate=1/1')
+        capsfilter2.props.caps = Gst.Caps.from_string('video/x-raw,format=RGB,width=320,height=240')
         queue2 = self._make_element('queue', 'overlay_queue2')
         queue2.props.max_size_buffers = 1
 
