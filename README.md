@@ -1,3 +1,26 @@
-# aws-nxp-ai-at-the-edge-gui
+# AWS Demo Local UI (localui)
 
-GUI to be used both local and on cloud premises for the Ai at the Edge Pasta Demo.
+A Quasar Framework app
+
+## Install the dependencies
+```bash
+npm install
+```
+
+### Start the app in development mode (hot-code reloading, error reporting, etc.)
+```bash
+quasar dev
+```
+
+### Lint the files
+```bash
+npm run lint
+```
+
+### Build the app for production
+```bash
+quasar build
+```
+
+### Customize the configuration
+See [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).
