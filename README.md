@@ -3,7 +3,7 @@
 Local graphical user interface (GUI) for the collaborative demo with Amazon
 and NXP to plug a [Toradex](https://www.toradex.com/) Computer on Module using
 the embedded Linux [Torizon](https://www.toradex.com/operating-systems/torizon)
-platform to AWS services such as AWS IoT Greengrass and AWS SageMaker Neo.
+platform to AWS services such as AWS IoT Greengrass and Amazon SageMaker Neo.
 
 # How to Use #
 
