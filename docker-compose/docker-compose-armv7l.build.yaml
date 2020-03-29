@@ -1,0 +1,8 @@
+version: '3.7'
+services:
+  local-ui:
+    build:
+      # This is relative to docker_compose directory in the current project
+      context: ..
+      dockerfile: ./dockerfiles/Dockerfile-arm32v7
+    image: torizonextras/pasta-demo-local-ui:latest-arm32v7
