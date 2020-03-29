@@ -4,5 +4,5 @@ services:
     build:
       # This is relative to docker_compose directory in the current project
       context: ..
-      dockerfile: Dockerfile
+      dockerfile: ./dockerfiles/Dockerfile-arm64v8
     image: torizonextras/pasta-demo-local-ui:latest-arm64v8
