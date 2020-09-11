@@ -158,7 +158,7 @@ module.exports = function (ctx) {
 
       packager: {
         platform: 'linux',
-        arch: 'arm64'
+        arch: 'all'
       },
 
       // packager: {

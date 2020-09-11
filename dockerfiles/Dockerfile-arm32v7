@@ -1,0 +1,40 @@
+FROM node as builder
+# must use x86 - Electron packager used by Quasar
+# runs on x86 and builds for armv7l and arm64
+# https://electron.github.io/electron-packager/master/
+
+RUN npm install -g @quasar/cli
+
+WORKDIR /usr/src
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+# Build Electron app
+RUN quasar build -m electron
+
+FROM torizon/arm32v7-debian-kiosk-mode-browser:latest
+
+# One dependency for Electron is missing on the base container
+USER root
+RUN apt-get -y update && apt-get install -y \
+    libxss1 \
+    && apt-get clean && apt-get autoremove && rm -rf /var/lib/apt/lists/*
+
+# copy the dist
+COPY --from=builder /usr/src/dist/electron/pasta-demo-local-ui-linux-armv7l \
+    /app/pasta-demo-local-ui
+
+# made a symlink for bin
+RUN ln -s /app/pasta-demo-local-ui/pasta-demo-local-ui /usr/bin/aws-app
+USER torizon
+
+COPY run_after.sh /usr/bin/
+
+# cmd to entrypoint
+ENV APP="run_after.sh"
+ENV APPARGS=""
+
+ENTRYPOINT ["/usr/bin/run_after.sh"]
+#CMD [ "www.toradex.com/pt-br/operating-systems/torizon" ]

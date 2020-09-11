@@ -2,7 +2,7 @@
   "name": "localui",
   "version": "0.0.1",
   "description": "A Quasar Framework app",
-  "productName": "AWS Demo Local UI",
+  "productName": "pasta-demo-local-ui",
   "cordovaId": "org.cordova.quasar.app",
   "author": "Matheus Castello <matheus@castello.eng.br>",
   "private": true,

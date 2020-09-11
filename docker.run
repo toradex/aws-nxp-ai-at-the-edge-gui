@@ -1,8 +1,0 @@
-docker run --name local-ui \
---rm \
--d \
---privileged \
--v /tmp:/tmp \
--v /dev:/dev \
--v /sys:/sys \
-${image}
